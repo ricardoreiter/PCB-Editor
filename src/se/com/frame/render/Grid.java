@@ -16,18 +16,20 @@ public class Grid implements Drawable {
 	@Override
 	public void paint(Graphics2D g) {
 		Rectangle dimensions = g.getClipBounds();
-		g.setColor(color);
-		
-		int currentColumn = spacing;
-		while (currentColumn <= dimensions.width) {
-			g.drawLine(currentColumn, 0, currentColumn, dimensions.height);
-			currentColumn += spacing;
-		}
-		
-		int currentRow = spacing;
-		while (currentRow <= dimensions.height) {
-			g.drawLine(0, currentRow, dimensions.width, currentRow);
-			currentRow += spacing;
+		if (dimensions != null) {
+			g.setColor(color);
+			
+			int currentColumn = spacing;
+			while (currentColumn <= dimensions.width) {
+				g.drawLine(currentColumn, 0, currentColumn, dimensions.height);
+				currentColumn += spacing;
+			}
+			
+			int currentRow = spacing;
+			while (currentRow <= dimensions.height) {
+				g.drawLine(0, currentRow, dimensions.width, currentRow);
+				currentRow += spacing;
+			}
 		}
 	}
 

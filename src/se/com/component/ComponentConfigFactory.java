@@ -25,7 +25,7 @@ public class ComponentConfigFactory {
 	private void loadComponents(String componentsConfigFolder) {
 		try(Stream<Path> paths = Files.walk(Paths.get(componentsConfigFolder))) {
 		    paths.forEach(filePath -> {
-		        if (Files.isRegularFile(filePath) && filePath.toString().endsWith(".pcbcomponent")) {
+		        if (Files.isRegularFile(filePath) && filePath.toString().endsWith(GlobalConfig.getInstance().getComponentsConfigExtension())) {
 		        	ComponentConfig component = loadComponent(filePath);
 		            components.put(component.getName(), component);
 		        }
@@ -41,6 +41,10 @@ public class ComponentConfigFactory {
 	
 	public ComponentConfig getComponent(String name) {
 		return components.get(name);
+	}
+	
+	public HashMap<String, ComponentConfig> getComponents() {
+		return components;
 	}
 	
 	public ComponentConfig loadComponent(Path filePath) {

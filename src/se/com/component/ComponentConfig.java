@@ -53,4 +53,9 @@ public class ComponentConfig implements Drawable {
 		return bounds;
 	}
 	
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
 }

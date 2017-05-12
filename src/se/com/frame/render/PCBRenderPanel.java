@@ -4,20 +4,24 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
 import se.com.component.Board;
 import se.com.component.BoardComponent;
+import se.com.component.ComponentConfig;
 import se.com.component.ComponentConfigFactory;
 
 @SuppressWarnings("serial")
 public class PCBRenderPanel extends JPanel {
 
 	private Grid grid = new Grid(50);
-	private Board board = new Board();
-	
-	public PCBRenderPanel() {
+	private Board board;
+	private BoardComponent addingComponent = null;
+
+	public PCBRenderPanel(Board board) {
+		super();
 		BoardComponent component = new BoardComponent(ComponentConfigFactory.getInstance().getComponent("resistor"));
 		component.setPos(300, 300);
 		component.setRotation(90);
@@ -25,12 +29,20 @@ public class PCBRenderPanel extends JPanel {
 		component = new BoardComponent(ComponentConfigFactory.getInstance().getComponent("resistor"));
 		component.setPos(200, 200);
 		board.addComponent(component);
+		this.board = board;
+	}
+	
+	public void setAddingComponent(ComponentConfig componentConfig) {
+		if (componentConfig == null) {
+			addingComponent = null;
+		} else if (addingComponent == null || addingComponent.getConfig() != componentConfig) {
+			this.addingComponent = new BoardComponent(componentConfig);
+		}
 	}
 	
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		
+	public void paintComponent(Graphics g) {
+	    super.paintComponent(g);
 		Dimension size = getSize();
 		
 		g.setColor(Color.BLACK);
@@ -39,6 +51,16 @@ public class PCBRenderPanel extends JPanel {
 		grid.paint(g2);
 		
 		board.paint(g2);
+		
+		if (addingComponent != null) {
+			addingComponent.paint(g2);
+		}
+	}
+
+	public void setAddingComponentPos(Point point) {
+		if (this.addingComponent != null) {
+			addingComponent.setPos(point.x, point.y);
+		}
 	}
 	
 

@@ -4,6 +4,7 @@ public class GlobalConfig {
 
 	private boolean showComponentBounds = false;
 	private String componentsConfigFolder = "./components";
+	private String componentsConfigExtension = ".pcbcomponent";
 	
 	private static GlobalConfig instance = new GlobalConfig();
 	
@@ -28,6 +29,14 @@ public class GlobalConfig {
 
 	public void setComponentsConfigFolder(String componentsConfigFolder) {
 		this.componentsConfigFolder = componentsConfigFolder;
+	}
+
+	public String getComponentsConfigExtension() {
+		return componentsConfigExtension;
+	}
+
+	public void setComponentsConfigExtension(String componentsConfigExtension) {
+		this.componentsConfigExtension = componentsConfigExtension;
 	}
 	
 }

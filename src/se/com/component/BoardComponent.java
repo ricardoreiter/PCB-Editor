@@ -13,9 +13,14 @@ public class BoardComponent implements Drawable {
 	private int rotation = 0;
 	
 	public BoardComponent(ComponentConfig config) {
-		this.componentConfig = config;
+		this(config, new Point(0, 0));
 	}
 	
+	public BoardComponent(ComponentConfig config, Point point) {
+		this.componentConfig = config;
+		this.pos = point;
+	}
+
 	public void setPos(int x, int y) {
 		pos.setLocation(x, y);
 	}
@@ -37,11 +42,15 @@ public class BoardComponent implements Drawable {
 		AffineTransform oldTransf = g.getTransform();
 		
 		g.translate(pos.getX(), pos.getY());
-//		g.rotate(Math.toRadians(rotation), componentConfig.getBounds().getWidth() / 2, componentConfig.getBounds().getHeight() / 2);
 		g.rotate(Math.toRadians(rotation));
-		componentConfig.paint(g);
+		if (componentConfig != null)
+			componentConfig.paint(g);
 		
 		g.setTransform(oldTransf);
+	}
+
+	public ComponentConfig getConfig() {
+		return componentConfig;
 	}
 
 }
