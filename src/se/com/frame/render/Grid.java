@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 public class Grid implements Drawable {
 
 	private int spacing;
-	private Color color = Color.GRAY;
+	private Color color = Color.DARK_GRAY;
 	
 	public Grid(int spacing) {
 		setSpacing(spacing);
