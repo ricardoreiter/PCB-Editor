@@ -54,7 +54,6 @@ public class AddComponentsController extends MainFrameController implements List
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		mainFrame.getRenderPanel().setAddingComponentPos(e.getPoint());
-		mainFrame.getRenderPanel().repaint();
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -22,7 +24,7 @@ import javax.swing.UIManager;
 import se.com.component.Board;
 import se.com.frame.render.PCBRenderPanel;
 
-public class MainFrame {
+public class MainFrame implements MouseMotionListener {
 
 	private JFrame frmPcbEditor;
 	private JPanel rightPanel;
@@ -141,6 +143,7 @@ public class MainFrame {
 		JMenuItem mntmOptions = new JMenuItem("Options");
 		mnEdit.add(mntmOptions);
 		setController(EditComponentsController.class);
+		renderPanel.addMouseMotionListener(this);
 	}
 	
 	private void setController(Class<? extends MainFrameController> controllerClass) {
@@ -169,6 +172,15 @@ public class MainFrame {
 
 	public Board getBoard() {
 		return board;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		renderPanel.repaint();
 	}
 	
 }

@@ -2,6 +2,7 @@ package se.com.component;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 import se.com.frame.render.Drawable;
@@ -51,6 +52,12 @@ public class BoardComponent implements Drawable {
 
 	public ComponentConfig getConfig() {
 		return componentConfig;
+	}
+
+	public Rectangle getBounds() {
+		// Aplicar matriz de transformação, pois deve aplicar a rotação também
+		Rectangle configRect = componentConfig.getBounds();
+		return new Rectangle((int) (pos.getX() + configRect.getX()), (int) (pos.getY() + configRect.getY()), (int) configRect.getWidth(), (int) configRect.getHeight());
 	}
 
 }
