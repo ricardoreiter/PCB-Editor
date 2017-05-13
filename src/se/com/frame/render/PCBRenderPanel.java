@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import se.com.component.Board;
 import se.com.component.BoardComponent;
-import se.com.component.ComponentConfig;
 import se.com.component.ComponentConfigFactory;
 
 @SuppressWarnings("serial")
@@ -18,7 +18,7 @@ public class PCBRenderPanel extends JPanel {
 
 	private Grid grid = new Grid(50);
 	private Board board;
-	private BoardComponent addingComponent = null;
+	private List<Drawable> temporaryDrawables = new LinkedList<Drawable>();
 
 	public PCBRenderPanel(Board board) {
 		super();
@@ -30,14 +30,6 @@ public class PCBRenderPanel extends JPanel {
 		component.setPos(200, 200);
 		board.addComponent(component);
 		this.board = board;
-	}
-	
-	public void setAddingComponent(ComponentConfig componentConfig) {
-		if (componentConfig == null) {
-			addingComponent = null;
-		} else if (addingComponent == null || addingComponent.getConfig() != componentConfig) {
-			this.addingComponent = new BoardComponent(componentConfig);
-		}
 	}
 	
 	@Override
@@ -52,16 +44,21 @@ public class PCBRenderPanel extends JPanel {
 		
 		board.paint(g2);
 		
-		if (addingComponent != null) {
-			addingComponent.paint(g2);
+		for (Drawable drawable : temporaryDrawables) {
+			drawable.paint(g2);
 		}
 	}
 
-	public void setAddingComponentPos(Point point) {
-		if (this.addingComponent != null) {
-			addingComponent.setPos(point.x, point.y);
-		}
+	public void addTemporaryDrawable(Drawable drawable) {
+		temporaryDrawables.add(drawable);
 	}
 	
+	public void removeTemporaryDrawable(Drawable drawable) {
+		temporaryDrawables.remove(drawable);
+	}
+	
+	public void clearTemporaryDrawables() {
+		temporaryDrawables.clear();
+	}
 
 }

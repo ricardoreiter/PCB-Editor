@@ -22,6 +22,12 @@ public class BoardComponent implements Drawable {
 		this.pos = point;
 	}
 
+	public BoardComponent(BoardComponent addingComponent) {
+		this.componentConfig = addingComponent.getConfig();
+		this.pos = (Point) addingComponent.getPos().clone();
+		this.rotation = addingComponent.getRotation();
+	}
+
 	public void setPos(int x, int y) {
 		pos.setLocation(x, y);
 	}
@@ -55,9 +61,13 @@ public class BoardComponent implements Drawable {
 	}
 
 	public Rectangle getBounds() {
-		// Aplicar matriz de transformação, pois deve aplicar a rotação também
 		Rectangle configRect = componentConfig.getBounds();
-		return new Rectangle((int) (pos.getX() + configRect.getX()), (int) (pos.getY() + configRect.getY()), (int) configRect.getWidth(), (int) configRect.getHeight());
+		
+		AffineTransform transform = new AffineTransform();
+		transform.translate(pos.getX(), pos.getY());
+		transform.rotate(Math.toRadians(rotation));
+		
+		return transform.createTransformedShape(configRect).getBounds();
 	}
 
 }

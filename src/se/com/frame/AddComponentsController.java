@@ -1,5 +1,7 @@
 package se.com.frame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,8 @@ import se.com.component.ComponentConfigFactory;
 
 public class AddComponentsController extends MainFrameController implements ListSelectionListener {
 
+	private BoardComponent addingComponent = null;
+	
 	public AddComponentsController(MainFrame mainFrame) {
 		super(mainFrame);
 	}
@@ -23,7 +27,8 @@ public class AddComponentsController extends MainFrameController implements List
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		mainFrame.getBoard().addComponent(new BoardComponent(componentList.getSelectedValue(), e.getPoint()));
+		if (addingComponent != null)
+			mainFrame.getBoard().addComponent(new BoardComponent(addingComponent));
 	}
 
 	@Override
@@ -53,7 +58,8 @@ public class AddComponentsController extends MainFrameController implements List
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mainFrame.getRenderPanel().setAddingComponentPos(e.getPoint());
+		if (addingComponent != null)
+			addingComponent.setPos(e.getX(), e.getY());
 	}
 
 	@Override
@@ -68,17 +74,29 @@ public class AddComponentsController extends MainFrameController implements List
 		
 		ComponentListModel componentListModel = new ComponentListModel(components);
 		componentList.setModel(componentListModel);
+		
+		panel.getRotateButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (addingComponent != null) {
+					addingComponent.setRotation(addingComponent.getRotation() + 90);
+				}
+			}
+		});
 		return panel;
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		mainFrame.getRenderPanel().setAddingComponent(componentList.getSelectedValue());
+		addingComponent = new BoardComponent(componentList.getSelectedValue());
+		mainFrame.getRenderPanel().clearTemporaryDrawables();
+		mainFrame.getRenderPanel().addTemporaryDrawable(addingComponent);
 	}
 
 	@Override
 	public void finishController() {
-		mainFrame.getRenderPanel().setAddingComponent(null);
+		mainFrame.getRenderPanel().clearTemporaryDrawables();
 	}
 
 }
