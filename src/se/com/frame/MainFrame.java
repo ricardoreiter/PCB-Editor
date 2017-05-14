@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,11 +19,12 @@ import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.event.MouseInputListener;
 
 import se.com.component.Board;
 import se.com.frame.render.PCBRenderPanel;
 
-public class MainFrame implements MouseMotionListener {
+public class MainFrame implements MouseInputListener {
 
 	private JFrame frmPcbEditor;
 	private JPanel rightPanel;
@@ -144,6 +144,7 @@ public class MainFrame implements MouseMotionListener {
 		mnEdit.add(mntmOptions);
 		setController(EditComponentsController.class);
 		renderPanel.addMouseMotionListener(this);
+		renderPanel.addMouseListener(this);
 	}
 	
 	private void setController(Class<? extends MainFrameController> controllerClass) {
@@ -181,6 +182,27 @@ public class MainFrame implements MouseMotionListener {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		renderPanel.repaint();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		renderPanel.repaint();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 	}
 	
 }
