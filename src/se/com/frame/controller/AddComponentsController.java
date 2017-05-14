@@ -1,4 +1,4 @@
-package se.com.frame;
+package se.com.frame.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +14,9 @@ import javax.swing.event.ListSelectionListener;
 import se.com.component.BoardComponent;
 import se.com.component.ComponentConfig;
 import se.com.component.ComponentConfigFactory;
+import se.com.frame.AddComponentsPanel;
+import se.com.frame.ComponentListModel;
+import se.com.frame.MainFrame;
 
 public class AddComponentsController extends MainFrameController implements ListSelectionListener {
 

@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 public class EditComponentsPanel extends JPanel {
 
 	private JTable table;
+	private JButton btnMoveComponent;
 
 	/**
 	 * Create the panel.
@@ -35,9 +36,13 @@ public class EditComponentsPanel extends JPanel {
 		));
 		add(table);
 		
-		JButton btnMoveComponent = new JButton("Move Component");
+		btnMoveComponent = new JButton("Move Component");
 		add(btnMoveComponent);
 
+	}
+	
+	public JButton getBtnMoveComponent() {
+		return btnMoveComponent;
 	}
 	
 }

@@ -70,4 +70,8 @@ public class BoardComponent implements Drawable {
 		return transform.createTransformedShape(configRect).getBounds();
 	}
 
+	public void setPos(Point point) {
+		setPos(point.x, point.y);
+	}
+
 }

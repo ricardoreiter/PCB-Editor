@@ -22,6 +22,9 @@ import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
 import se.com.component.Board;
+import se.com.frame.controller.AddComponentsController;
+import se.com.frame.controller.EditComponentsController;
+import se.com.frame.controller.MainFrameController;
 import se.com.frame.render.PCBRenderPanel;
 
 public class MainFrame implements MouseInputListener {

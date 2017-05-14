@@ -1,7 +1,9 @@
-package se.com.frame;
+package se.com.frame.controller;
 
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
+
+import se.com.frame.MainFrame;
 
 public abstract class MainFrameController implements MouseInputListener {
 
