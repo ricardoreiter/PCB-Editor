@@ -1,10 +1,13 @@
 package se.com.config;
 
+import java.awt.Color;
+
 public class GlobalConfig {
 
 	private boolean showComponentBounds = false;
 	private String componentsConfigFolder = "./components";
 	private String componentsConfigExtension = ".pcbcomponent";
+	private Color trackColor = Color.GREEN;
 	
 	private static GlobalConfig instance = new GlobalConfig();
 	
@@ -37,6 +40,10 @@ public class GlobalConfig {
 
 	public void setComponentsConfigExtension(String componentsConfigExtension) {
 		this.componentsConfigExtension = componentsConfigExtension;
+	}
+
+	public Color getTrackColor() {
+		return trackColor;
 	}
 	
 }

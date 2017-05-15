@@ -1,4 +1,4 @@
-package se.com.frame.controller;
+package se.com.frame.controller.internal;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -12,6 +12,7 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 	private Point movingComponentInitialPos;
 	private int movingComponentInitialRotation;
 	private BoardEditorInternalControllerObserver observer;
+	private Point oldPoint;
 	
 	public MovingComponentInternalController(BoardComponent component, BoardEditorInternalControllerObserver observer) {
 		this.component = component;
@@ -22,33 +23,24 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		component.setPos(e.getPoint());
-		if (observer != null)
-			observer.controllerFinished(this);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (observer != null)
+			observer.notify(this);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -60,25 +52,23 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (oldPoint != null) {
+			Point diff = new Point((component.getPos().x) - (oldPoint.x - e.getX()), (component.getPos().y) - (oldPoint.y - e.getY()));
+			component.setPos(diff);
+		}
+		oldPoint = e.getPoint();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		component.setPos(e.getPoint());
 	}
 
 	@Override
@@ -87,6 +77,10 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 			component.setPos(movingComponentInitialPos);
 			component.setRotation(movingComponentInitialRotation);
 		}
+	}
+
+	@Override
+	public void startController() {
 	}
 
 }

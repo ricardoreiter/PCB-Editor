@@ -22,8 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
 import se.com.component.Board;
-import se.com.frame.controller.AddComponentsController;
-import se.com.frame.controller.EditComponentsController;
+import se.com.frame.controller.ComponentEditModeController;
 import se.com.frame.controller.MainFrameController;
 import se.com.frame.render.PCBRenderPanel;
 
@@ -118,34 +117,26 @@ public class MainFrame implements MouseInputListener {
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
-		JMenuItem mntmAddNewComponents = new JMenuItem("Add New Components");
-		mntmAddNewComponents.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setController(AddComponentsController.class);
-			}
-		});
-		mnEdit.add(mntmAddNewComponents);
-		
-		JMenuItem mntmAddNewTracks = new JMenuItem("Add New Tracks");
-		mnEdit.add(mntmAddNewTracks);
-		
-		JSeparator separator_2 = new JSeparator();
-		mnEdit.add(separator_2);
-		
 		JMenuItem mntmEditBoard = new JMenuItem("Edit Board");
 		mntmEditBoard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setController(EditComponentsController.class);
+				setController(ComponentEditModeController.class);
 			}
 		});
 		mnEdit.add(mntmEditBoard);
+		
+		JMenuItem mntmEditTracks = new JMenuItem("Edit Tracks");
+		mnEdit.add(mntmEditTracks);
+		
+		JSeparator separator_2 = new JSeparator();
+		mnEdit.add(separator_2);
 		
 		JSeparator separator_3 = new JSeparator();
 		mnEdit.add(separator_3);
 		
 		JMenuItem mntmOptions = new JMenuItem("Options");
 		mnEdit.add(mntmOptions);
-		setController(EditComponentsController.class);
+		setController(ComponentEditModeController.class);
 		renderPanel.addMouseMotionListener(this);
 		renderPanel.addMouseListener(this);
 	}
@@ -180,6 +171,7 @@ public class MainFrame implements MouseInputListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		renderPanel.repaint();
 	}
 
 	@Override
@@ -194,10 +186,12 @@ public class MainFrame implements MouseInputListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		renderPanel.repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		renderPanel.repaint();
 	}
 
 	@Override

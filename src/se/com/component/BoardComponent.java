@@ -2,76 +2,52 @@ package se.com.component;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
+import java.util.LinkedList;
+import java.util.List;
 
-import se.com.frame.render.Drawable;
+import se.com.frame.render.GraphicObject;
 
-public class BoardComponent implements Drawable {
+public class BoardComponent extends GraphicObject {
 
 	private final ComponentConfig componentConfig;
-	private Point pos = new Point(0, 0);
-	private int rotation = 0;
+	private List<Pad> pads = new LinkedList<>();
 	
 	public BoardComponent(ComponentConfig config) {
 		this(config, new Point(0, 0));
 	}
 	
 	public BoardComponent(ComponentConfig config, Point point) {
+		super(point);
+		assert config == null : "Violation: config is null";
 		this.componentConfig = config;
-		this.pos = point;
+		this.bounds = config.getBounds();
+		createPads();
 	}
 
 	public BoardComponent(BoardComponent addingComponent) {
-		this.componentConfig = addingComponent.getConfig();
-		this.pos = (Point) addingComponent.getPos().clone();
+		this(addingComponent.getConfig(),(Point) addingComponent.getPos().clone());
 		this.rotation = addingComponent.getRotation();
-	}
-
-	public void setPos(int x, int y) {
-		pos.setLocation(x, y);
-	}
-	
-	public Point getPos() {
-		return pos;
-	}
-	
-	public int getRotation() {
-		return rotation;
-	}
-
-	public void setRotation(int rotation) {
-		this.rotation = rotation;
-	}
-	
-	@Override
-	public void paint(Graphics2D g) {
-		AffineTransform oldTransf = g.getTransform();
-		
-		g.translate(pos.getX(), pos.getY());
-		g.rotate(Math.toRadians(rotation));
-		if (componentConfig != null)
-			componentConfig.paint(g);
-		
-		g.setTransform(oldTransf);
+		setTransform(addingComponent.getTransform());
 	}
 
 	public ComponentConfig getConfig() {
 		return componentConfig;
 	}
 
-	public Rectangle getBounds() {
-		Rectangle configRect = componentConfig.getBounds();
-		
-		AffineTransform transform = new AffineTransform();
-		transform.translate(pos.getX(), pos.getY());
-		transform.rotate(Math.toRadians(rotation));
-		
-		return transform.createTransformedShape(configRect).getBounds();
+	public List<Pad> getPads() {
+		return pads;
 	}
 
-	public void setPos(Point point) {
-		setPos(point.x, point.y);
+	private void createPads() {
+		List<Point> padsLocations = componentConfig.getPadsLocations();
+		for (Point p : padsLocations) {
+			pads.add(new Pad(p, this));
+		}
 	}
 
+	@Override
+	public void internalPaint(Graphics2D g) {
+		componentConfig.paint(g);
+	}
+	
 }

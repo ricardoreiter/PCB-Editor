@@ -2,6 +2,7 @@ package se.com.component;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.LinkedList;
@@ -51,6 +52,14 @@ public class ComponentConfig implements Drawable {
 
 	public Rectangle getBounds() {
 		return bounds;
+	}
+	
+	public List<Point> getPadsLocations() {
+		List<Point> result = new LinkedList<>();
+		for (Line2D pad : pads) {
+			result.add(new Point((int) pad.x2, (int) pad.y2)); 
+		}
+		return result;
 	}
 	
 	@Override

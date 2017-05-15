@@ -1,4 +1,4 @@
-package se.com.frame.controller;
+package se.com.frame.controller.internal;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -11,6 +11,7 @@ import se.com.util.ColorUtils;
 
 public class SelectingComponentInternalController implements BoardEditorInternalController {
 
+	private BoardComponent initialSelectedComponent;
 	private BoardComponent componentHighlighted;
 	private HighlightBox componentHighlightedBox;
 	private BoardComponent selectedComponent;
@@ -24,9 +25,16 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 		this.observer = observer;
 	}
 	
+	public SelectingComponentInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer, BoardComponent initialSelectedComponent) {
+		this(mainFrame, observer);
+		this.initialSelectedComponent = initialSelectedComponent;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		BoardComponent component = mainFrame.getBoard().getComponentAtPos(e.getPoint());
+	}
+	
+	private void selectComponent(BoardComponent component) {
 		if (component != null) {
 			if (selectedComponent != component) {
 				mainFrame.getRenderPanel().removeTemporaryDrawable(selectedComponentBox);
@@ -42,37 +50,28 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 			componentHighlighted = null;
 			selectedComponentBox = null;
 		}
-		observer.controllerFinished(this);
+		observer.notify(this);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		selectComponent(mainFrame.getBoard().getComponentAtPos(e.getPoint()));
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -109,6 +108,11 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void startController() {
+		selectComponent(initialSelectedComponent);
 	}
 
 	@Override

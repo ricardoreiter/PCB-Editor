@@ -13,6 +13,7 @@ import se.com.frame.render.Drawable;
 public class Board implements Drawable {
 
 	private List<BoardComponent> components = new LinkedList<>();
+	private List<Track> tracks = new LinkedList<>();
 
 	public void addComponent(BoardComponent component) {
 		components.add(component);
@@ -22,6 +23,9 @@ public class Board implements Drawable {
 	public void paint(Graphics2D g) {
 		for (BoardComponent comp : components) {
 			comp.paint(g);
+		}
+		for (Track track : tracks) {
+			track.paint(g);
 		}
 	}
 
@@ -39,6 +43,10 @@ public class Board implements Drawable {
 			return -1;
 		});
 		return componentAtPos.orElse(null);
+	}
+
+	public void addTrack(Track track) {
+		tracks.add(track);
 	}
 	
 }
