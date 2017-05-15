@@ -45,9 +45,6 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_R) {
-			component.setRotation(component.getRotation() + 90);
-		}
 	}
 
 	@Override
@@ -56,6 +53,9 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_R) {
+			component.rotate();
+		}
 	}
 
 	@Override

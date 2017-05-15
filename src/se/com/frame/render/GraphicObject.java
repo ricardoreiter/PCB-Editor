@@ -7,6 +7,8 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.List;
 
+import se.com.config.GlobalConfig;
+
 /**
  * A graphical object that can be attached children to it
  * @author Ricardo Reiter
@@ -50,11 +52,15 @@ public abstract class GraphicObject implements Drawable {
 	
 	public Point getPos() {
 		AffineTransform transform = new AffineTransform();
+		transform.rotate(Math.toRadians(rotation), pos.getX(), pos.getY());
 		transform.translate(pos.getX(), pos.getY());
-		transform.rotate(Math.toRadians(rotation));
 		Point result = new Point(0, 0);
 		transform.transform(new Point(0, 0), result);
 		return result;
+	}
+	
+	private Point getMiddleCalculedPos() {
+		return new Point((int) (pos.getX() - bounds.getCenterX()), (int) (pos.getY() - bounds.getCenterY()));
 	}
 
 	public Point getGlobalPos() {
@@ -74,8 +80,9 @@ public abstract class GraphicObject implements Drawable {
 	public void paint(Graphics2D g) {
 		AffineTransform oldTransf = g.getTransform();
 		
+		Point pos = getMiddleCalculedPos();
+		g.rotate(Math.toRadians(rotation), this.pos.getX(), this.pos.getY());
 		g.translate(pos.getX(), pos.getY());
-		g.rotate(Math.toRadians(rotation));
 		transform = g.getTransform();
 		internalPaint(g);
 		
@@ -95,7 +102,17 @@ public abstract class GraphicObject implements Drawable {
 	}
 	
 	public Rectangle getBounds() {
-		return transform.createTransformedShape(bounds).getBounds();
+		return (Rectangle) bounds.clone();
+	}
+	
+	public Rectangle getGlobalBounds() {
+		Rectangle ownBounds = transform.createTransformedShape(getBounds()).getBounds();
+		for (GraphicObject child : children) {
+			ownBounds.add(child.getGlobalBounds());
+		} 
+		ownBounds.grow(GlobalConfig.getInstance().getComponentsGlobalBoundsSizeBonus(), 
+				GlobalConfig.getInstance().getComponentsGlobalBoundsSizeBonus());
+		return ownBounds;
 	}
 	
 	public AffineTransform getTransform() {

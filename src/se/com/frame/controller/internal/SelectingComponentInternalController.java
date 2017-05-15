@@ -38,9 +38,9 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 		if (component != null) {
 			if (selectedComponent != component) {
 				mainFrame.getRenderPanel().removeTemporaryDrawable(selectedComponentBox);
-				
 				selectedComponent = component;
-				selectedComponentBox = new HighlightBox(selectedComponent.getBounds(), Color.GREEN);
+				
+				selectedComponentBox = new HighlightBox(selectedComponent, Color.GREEN);
 				mainFrame.getRenderPanel().addTemporaryDrawable(selectedComponentBox);
 			}
 		} else {
@@ -82,7 +82,7 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 				mainFrame.getRenderPanel().removeTemporaryDrawable(componentHighlightedBox);
 				
 				componentHighlighted = component;
-				componentHighlightedBox = new HighlightBox(componentHighlighted.getBounds(), ColorUtils.LIGHT_GREEN);
+				componentHighlightedBox = new HighlightBox(componentHighlighted, ColorUtils.LIGHT_GREEN);
 				mainFrame.getRenderPanel().addTemporaryDrawable(componentHighlightedBox);
 			}
 		} else {
@@ -94,20 +94,19 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
+		if (e.getKeyCode() == KeyEvent.VK_R) {
+			if (selectedComponent != null) {
+				selectedComponent.rotate();
+			}
+		}
 	}
 	
 	@Override

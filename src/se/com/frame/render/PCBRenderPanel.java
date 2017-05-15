@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +13,6 @@ import javax.swing.JPanel;
 import se.com.component.Board;
 import se.com.component.BoardComponent;
 import se.com.component.ComponentConfigFactory;
-import se.com.component.Track;
 
 @SuppressWarnings("serial")
 public class PCBRenderPanel extends JPanel {
@@ -25,19 +23,13 @@ public class PCBRenderPanel extends JPanel {
 
 	public PCBRenderPanel(Board board) {
 		super();
+		setFocusable(true);
 		BoardComponent component = new BoardComponent(ComponentConfigFactory.getInstance().getComponent("resistor"));
 		component.setPos(300, 200);
 		board.addComponent(component);
 		BoardComponent component2 = new BoardComponent(ComponentConfigFactory.getInstance().getComponent("resistor"));
 		component2.setPos(300, 300);
 		board.addComponent(component2);
-		
-		Track track = new Track();
-//		track.setPadA(component.getPads().get(1));
-//		track.setPadB(component2.getPads().get(0));
-		track.addPoint(new Point(component.getPads().get(1).getPos().x + 300, component.getPads().get(1).getPos().y + 200));
-		track.addPoint(new Point(component2.getPads().get(0).getPos().x + 300, component2.getPads().get(0).getPos().y + 300));
-		board.addTrack(track);
 		
 		this.board = board;
 	}

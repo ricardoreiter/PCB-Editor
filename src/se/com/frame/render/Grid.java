@@ -1,5 +1,6 @@
 package se.com.frame.render;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -17,6 +18,7 @@ public class Grid implements Drawable {
 	public void paint(Graphics2D g) {
 		Rectangle dimensions = g.getClipBounds();
 		if (dimensions != null) {
+			g.setStroke(new BasicStroke(1));
 			g.setColor(color);
 			
 			int currentColumn = spacing;

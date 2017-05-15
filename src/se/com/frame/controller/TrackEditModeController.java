@@ -1,52 +1,27 @@
 package se.com.frame.controller;
 
-import java.awt.event.MouseEvent;
-
 import javax.swing.JPanel;
 
 import se.com.frame.MainFrame;
+import se.com.frame.controller.internal.AddTrackInternalController;
+import se.com.frame.controller.internal.BoardEditorInternalController;
+import se.com.frame.controller.internal.BoardEditorInternalControllerObserver;
 
-public class TrackEditModeController extends MainFrameController {
+public class TrackEditModeController extends MainFrameController implements BoardEditorInternalControllerObserver {
 
 	public TrackEditModeController(MainFrame mainFrame) {
 		super(mainFrame);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
+		setNewInternalController(new AddTrackInternalController(mainFrame));
 	}
 
 	@Override
 	public JPanel getControllerPanel() {
-		return null;
+		return new JPanel();
 	}
 
 	@Override
-	public void finishController() {
+	public void notify(BoardEditorInternalController source) {
+		
 	}
 
 }

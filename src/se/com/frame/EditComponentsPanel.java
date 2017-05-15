@@ -3,7 +3,6 @@ package se.com.frame;
 import java.awt.Color;
 import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -18,7 +17,6 @@ import se.com.component.ComponentConfig;
 public class EditComponentsPanel extends JPanel {
 
 	private JList<ComponentConfig> list = new JList<ComponentConfig>();
-	private JButton btnRotate = new JButton("Rotate");
 	private JTable table;
 	
 	/**
@@ -35,8 +33,7 @@ public class EditComponentsPanel extends JPanel {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBorder(new LineBorder(new Color(0, 0, 0)));
 		list.setAlignmentY(1.0f);
-		
-		add(btnRotate);
+		list.setFocusable(false);
 		
 		JLabel lblSelected = new JLabel("Selected Component");
 		lblSelected.setHorizontalAlignment(SwingConstants.CENTER);
@@ -45,6 +42,7 @@ public class EditComponentsPanel extends JPanel {
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
+		table.setFocusable(false);
 		add(table);
 	}
 
@@ -52,10 +50,6 @@ public class EditComponentsPanel extends JPanel {
 		return list;
 	}
 	
-	public JButton getRotateButton() {
-		return btnRotate;
-	}
-
 	public JTable getSelectedComponentTable() {
 		return table;
 	}

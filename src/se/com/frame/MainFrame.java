@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
@@ -24,9 +25,10 @@ import javax.swing.event.MouseInputListener;
 import se.com.component.Board;
 import se.com.frame.controller.ComponentEditModeController;
 import se.com.frame.controller.MainFrameController;
+import se.com.frame.controller.TrackEditModeController;
 import se.com.frame.render.PCBRenderPanel;
 
-public class MainFrame implements MouseInputListener {
+public class MainFrame implements MouseInputListener, KeyListener {
 
 	private JFrame frmPcbEditor;
 	private JPanel rightPanel;
@@ -117,7 +119,7 @@ public class MainFrame implements MouseInputListener {
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
-		JMenuItem mntmEditBoard = new JMenuItem("Edit Board");
+		JMenuItem mntmEditBoard = new JMenuItem("Edit Components");
 		mntmEditBoard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setController(ComponentEditModeController.class);
@@ -126,6 +128,11 @@ public class MainFrame implements MouseInputListener {
 		mnEdit.add(mntmEditBoard);
 		
 		JMenuItem mntmEditTracks = new JMenuItem("Edit Tracks");
+		mntmEditTracks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setController(TrackEditModeController.class);
+			}
+		});
 		mnEdit.add(mntmEditTracks);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -139,6 +146,7 @@ public class MainFrame implements MouseInputListener {
 		setController(ComponentEditModeController.class);
 		renderPanel.addMouseMotionListener(this);
 		renderPanel.addMouseListener(this);
+		renderPanel.addKeyListener(this);
 	}
 	
 	private void setController(Class<? extends MainFrameController> controllerClass) {
@@ -147,6 +155,7 @@ public class MainFrame implements MouseInputListener {
 				rightPanel.removeAll();
 				renderPanel.removeMouseListener(controller);
 				renderPanel.removeMouseMotionListener(controller);
+				renderPanel.removeKeyListener(controller);
 				controller.finishController();
 			}
 			try {
@@ -156,6 +165,7 @@ public class MainFrame implements MouseInputListener {
 			}
 			renderPanel.addMouseListener(controller);
 			renderPanel.addMouseMotionListener(controller);
+			renderPanel.addKeyListener(controller);
 			rightPanel.add(controller.getControllerPanel());
 			frmPcbEditor.revalidate();
 		}
@@ -192,6 +202,7 @@ public class MainFrame implements MouseInputListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		renderPanel.repaint();
+		renderPanel.requestFocus();
 	}
 
 	@Override
@@ -200,6 +211,19 @@ public class MainFrame implements MouseInputListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		renderPanel.repaint();
 	}
 	
 }

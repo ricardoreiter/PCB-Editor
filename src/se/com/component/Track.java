@@ -1,5 +1,6 @@
 package se.com.component;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class Track implements Drawable {
 	@Override
 	public void paint(Graphics2D g) {
 		g.setColor(GlobalConfig.getInstance().getTrackColor());
+		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getTrackWidth()));
 		Point firstPoint = points.get(0);
 		for (int i = 1; i < points.size(); i++) {
 			Point secondPoint = points.get(i);

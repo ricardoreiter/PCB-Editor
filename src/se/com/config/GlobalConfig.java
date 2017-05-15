@@ -8,7 +8,48 @@ public class GlobalConfig {
 	private String componentsConfigFolder = "./components";
 	private String componentsConfigExtension = ".pcbcomponent";
 	private Color trackColor = Color.GREEN;
+	private int componentsGlobalBoundsSizeBonus = 2;
+	private int componentShapeWidth = 1;
+	private int trackWidth = 2;
+	private int padWidth = 2;
+	private int highlightBoxWidth = 1;
 	
+	public int getComponentShapeWidth() {
+		return componentShapeWidth;
+	}
+
+	public void setComponentShapeWidth(int componentShapeWidth) {
+		this.componentShapeWidth = componentShapeWidth;
+	}
+
+	public int getTrackWidth() {
+		return trackWidth;
+	}
+
+	public void setTrackWidth(int trackWidth) {
+		this.trackWidth = trackWidth;
+	}
+
+	public int getPadWidth() {
+		return padWidth;
+	}
+
+	public void setPadWidth(int padWidth) {
+		this.padWidth = padWidth;
+	}
+
+	public int getHighlightBoxWidth() {
+		return highlightBoxWidth;
+	}
+
+	public void setHighlightBoxWidth(int highlightBoxWidth) {
+		this.highlightBoxWidth = highlightBoxWidth;
+	}
+
+	public void setTrackColor(Color trackColor) {
+		this.trackColor = trackColor;
+	}
+
 	private static GlobalConfig instance = new GlobalConfig();
 	
 	private GlobalConfig() {
@@ -44,6 +85,14 @@ public class GlobalConfig {
 
 	public Color getTrackColor() {
 		return trackColor;
+	}
+
+	public int getComponentsGlobalBoundsSizeBonus() {
+		return componentsGlobalBoundsSizeBonus;
+	}
+
+	public void setComponentsGlobalBoundsSizeBonus(int minimalComponentsGlobalBoundsSizeBonus) {
+		this.componentsGlobalBoundsSizeBonus = minimalComponentsGlobalBoundsSizeBonus;
 	}
 	
 }

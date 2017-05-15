@@ -1,5 +1,6 @@
 package se.com.component;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -33,6 +34,7 @@ public class ComponentConfig implements Drawable {
 	
 	@Override
 	public void paint(Graphics2D g) {
+		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getComponentShapeWidth()));
 		if (GlobalConfig.getInstance().isShowComponentBounds()) {
 			g.setColor(BOUNDS_COLOR);
 			g.drawRect(0, 0, bounds.width, bounds.height);

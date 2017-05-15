@@ -49,5 +49,9 @@ public class BoardComponent extends GraphicObject {
 	public void internalPaint(Graphics2D g) {
 		componentConfig.paint(g);
 	}
+
+	public void rotate() {
+		setRotation(getRotation() + 90);
+	}
 	
 }

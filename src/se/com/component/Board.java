@@ -31,11 +31,11 @@ public class Board implements Drawable {
 
 	public BoardComponent getComponentAtPos(Point point) {
 		List<BoardComponent> filtered = components.stream().filter(component -> {
-											return component.getBounds().contains(point);
+											return component.getGlobalBounds().contains(point);
 										}).collect(Collectors.toList());
 		Optional<BoardComponent> componentAtPos = filtered.stream().min((comp1, comp2) -> {
-			Rectangle bounds1 = comp1.getBounds();
-			Rectangle bounds2 = comp2.getBounds();
+			Rectangle bounds1 = comp1.getGlobalBounds();
+			Rectangle bounds2 = comp2.getGlobalBounds();
 			double distanceComp1 = Point.distance(bounds1.getCenterX(), bounds1.getCenterY(), point.getX(), point.getY());
 			double distanceComp2 = Point.distance(bounds2.getCenterX(), bounds2.getCenterY(), point.getX(), point.getY());
 			if (distanceComp1 == distanceComp2) return 0;
@@ -47,6 +47,16 @@ public class Board implements Drawable {
 
 	public void addTrack(Track track) {
 		tracks.add(track);
+	}
+
+	public Pad getPadAtPos(Point point) {
+		List<Pad> pads = new LinkedList<>();
+		components.forEach(comp -> pads.addAll(comp.getPads()));
+		List<Pad> filtered = pads.stream().filter(pad -> {return pad.getGlobalBounds().contains(point);}).collect(Collectors.toList());
+		if (filtered.size() > 0) {
+			return filtered.get(0);
+		}
+		return null;
 	}
 	
 }
