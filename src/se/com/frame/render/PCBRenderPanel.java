@@ -31,6 +31,22 @@ public class PCBRenderPanel extends JPanel {
 		component2.setPos(300, 300);
 		board.addComponent(component2);
 		
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					repaint();
+				}
+			}
+		});
+		thread.start();
+		
 		this.board = board;
 	}
 	

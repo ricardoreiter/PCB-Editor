@@ -37,7 +37,7 @@ public class BoardComponent extends GraphicObject {
 	public List<Pad> getPads() {
 		return pads;
 	}
-
+	
 	private void createPads() {
 		List<Point> padsLocations = componentConfig.getPadsLocations();
 		for (Point p : padsLocations) {

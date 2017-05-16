@@ -35,7 +35,11 @@ public class Pad extends GraphicObject {
 	public void internalPaint(Graphics2D g) {
 		g.setColor(GlobalConfig.getInstance().getTrackColor());
 		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getPadWidth()));
-		g.drawArc(0, 0, 10, 10, 0, 360);
+		g.fillOval(0, 0, 10, 10);
+	}
+
+	public void detachTrack(Track track) {
+		attachedTracks.remove(track);
 	}
 	
 }

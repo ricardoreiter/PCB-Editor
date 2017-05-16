@@ -58,5 +58,15 @@ public class Board implements Drawable {
 		}
 		return null;
 	}
-	
+
+	public void removeTrack(Track track) {
+		tracks.remove(track);
+		if (track.getPadA() != null) {
+			track.getPadA().detachTrack(track);
+		}
+		if (track.getPadB() != null) {
+			track.getPadB().detachTrack(track);
+		}
+	}
+
 }

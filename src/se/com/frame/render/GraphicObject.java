@@ -66,7 +66,7 @@ public abstract class GraphicObject implements Drawable {
 	public Point getGlobalPos() {
 		if (getParent() != null) {
 			Point result = new Point(0, 0);
-			transform.transform(new Point(0, 0), result);
+			transform.transform(new Point((int) bounds.getCenterX(), (int) bounds.getCenterY()), result);
 			return result;
 		}
 		return getPos();

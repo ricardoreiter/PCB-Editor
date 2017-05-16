@@ -9,20 +9,24 @@ import se.com.frame.MainFrame;
 import se.com.frame.render.HighlightBox;
 import se.com.util.ColorUtils;
 
-public class AddTrackInternalController implements BoardEditorInternalController {
+public class SelectTrackInternalController implements BoardEditorInternalController {
 
-	private Pad padHighlighted;
+	private Pad pad;
 	private HighlightBox padHighlightedBox;
 	private Track track;
 	private MainFrame mainFrame;
+	private BoardEditorInternalControllerObserver observer;
 
-	public AddTrackInternalController(MainFrame mainFrame) {
+	public SelectTrackInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer) {
 		this.mainFrame = mainFrame;
+		this.observer = observer;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+		if (pad != null) {
+			observer.notify(this);
+		}
 	}
 
 	@Override
@@ -56,18 +60,18 @@ public class AddTrackInternalController implements BoardEditorInternalController
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		Pad pad = mainFrame.getBoard().getPadAtPos(e.getPoint());
-		if (pad != null) {
-			if (padHighlighted != pad) {
+		Pad selectedPad = mainFrame.getBoard().getPadAtPos(e.getPoint());
+		if (selectedPad != null) {
+			if (pad != selectedPad) {
 				mainFrame.getRenderPanel().removeTemporaryDrawable(padHighlightedBox);
 				
-				padHighlighted = pad;
-				padHighlightedBox = new HighlightBox(padHighlighted, ColorUtils.LIGHT_GREEN);
+				pad = selectedPad;
+				padHighlightedBox = new HighlightBox(pad, ColorUtils.LIGHT_GREEN);
 				mainFrame.getRenderPanel().addTemporaryDrawable(padHighlightedBox);
 			}
 		} else {
 			mainFrame.getRenderPanel().removeTemporaryDrawable(padHighlightedBox);
-			padHighlighted = null;
+			pad = null;
 			padHighlightedBox = null;
 		}
 	}
@@ -92,14 +96,21 @@ public class AddTrackInternalController implements BoardEditorInternalController
 
 	@Override
 	public void startController() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void finishController(boolean forced) {
-		// TODO Auto-generated method stub
-		
+		mainFrame.getRenderPanel().clearTemporaryDrawables();
+		pad = null;
+		padHighlightedBox = null;
+	}
+
+	public Track getTrack() {
+		return track;
+	}
+	
+	public Pad getPad() {
+		return pad;
 	}
 
 }

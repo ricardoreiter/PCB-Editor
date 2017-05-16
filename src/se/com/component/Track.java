@@ -15,8 +15,9 @@ public class Track implements Drawable {
 	private Pad padB;
 	private List<Point> points;
 	
-	public Track() {
+	public Track(Pad pad) {
 		points = new ArrayList<>();
+		setPadA(pad);
 	}
 	
 	public Pad getPadA() {
@@ -24,8 +25,16 @@ public class Track implements Drawable {
 	}
 
 	public void setPadA(Pad padA) {
+		if(this.padA != null) {
+			this.padA.detachTrack(this);
+		}
+		
 		this.padA = padA;
-		addPoint(padA.getGlobalPos());
+		if (padA != null) {
+			padA.attachTrack(this);
+			addPoint(padA.getGlobalPos());
+		}
+		
 	}
 
 	public Pad getPadB() {
@@ -33,13 +42,24 @@ public class Track implements Drawable {
 	}
 
 	public void setPadB(Pad padB) {
+		if(this.padB != null) {
+			this.padB.detachTrack(this);
+		}
+		
 		this.padB = padB;
+		if (padB != null) {
+			padB.attachTrack(this);
+			addPoint(padB.getGlobalPos());
+		}
 	}
 
 	@Override
 	public void paint(Graphics2D g) {
 		g.setColor(GlobalConfig.getInstance().getTrackColor());
 		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getTrackWidth()));
+		
+		updatePadsLocation();
+		
 		Point firstPoint = points.get(0);
 		for (int i = 1; i < points.size(); i++) {
 			Point secondPoint = points.get(i);
@@ -48,8 +68,29 @@ public class Track implements Drawable {
 		}
 	}
 
+	public void updatePadsLocation() {
+		if (getPadA() != null) {
+			points.set(0, getPadA().getGlobalPos());
+		}
+		if (getPadB() != null) {
+			points.set(points.size()-1, getPadB().getGlobalPos());
+		}
+	}
+
 	public void addPoint(Point point) {
 		points.add(point);
+	}
+
+	public List<Point> getPoints() {
+		return points;
+	}
+	
+	public Point getLastPoint() {
+		return points.get(points.size() - 1);
+	}
+
+	public void removeLastPoint() {
+		points.remove(points.size() - 1);
 	}
 
 }
