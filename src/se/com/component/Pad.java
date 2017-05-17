@@ -11,6 +11,8 @@ import se.com.config.GlobalConfig;
 import se.com.frame.render.GraphicObject;
 
 public class Pad extends GraphicObject {
+	
+	private List<Track> attachedTracks = new LinkedList<>();
 
 	public Pad(Point pos) {
 		super(pos);
@@ -20,8 +22,6 @@ public class Pad extends GraphicObject {
 		super(pos, parent);
 		bounds = new Rectangle(0, 0, 9, 9);
 	}
-
-	private List<Track> attachedTracks = new LinkedList<>();
 
 	public void attachTrack(Track track) {
 		attachedTracks.add(track);

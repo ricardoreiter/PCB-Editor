@@ -15,7 +15,7 @@ import se.com.config.GlobalConfig;
  */
 public abstract class GraphicObject implements Drawable {
 
-	private GraphicObject parent;
+	transient private GraphicObject parent;
 	private AffineTransform transform = new AffineTransform();
 	protected Point pos;
 	protected int rotation;

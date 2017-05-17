@@ -47,7 +47,7 @@ public class SelectedComponentTableModel extends AbstractTableModel {
     	} else {
 	    	data = new Object[][]{
 	    		{"type", component.getConfig().getName()}, 
-	    		{"pos", component.getPos()}, 
+	    		{"pos", component.getPos().x + ", " + component.getPos().y}, 
 	    		{"rotation", component.getRotation()}};
     	}
     	fireTableDataChanged();

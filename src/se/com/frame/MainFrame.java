@@ -10,7 +10,10 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,6 +26,7 @@ import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
 import se.com.component.Board;
+import se.com.component.BoardLoader;
 import se.com.frame.controller.ComponentEditModeController;
 import se.com.frame.controller.MainFrameController;
 import se.com.frame.controller.TrackEditModeController;
@@ -34,6 +38,7 @@ public class MainFrame implements MouseInputListener, KeyListener {
 	private JPanel rightPanel;
 	private PCBRenderPanel renderPanel;
 	private Board board = new Board();
+	private File openFile = null;
 	private MainFrameController controller;
 
 	/**
@@ -94,26 +99,53 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openFile = null;
+				board = new Board();
+				renderPanel.setBoard(board);
+			}
+		});
 		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mnFile.add(mntmNew);
 		
 		JMenuItem mntmOpenFile = new JMenuItem("Open file...");
+		mntmOpenFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openFileDialog();
+			}
+		});
 		mnFile.add(mntmOpenFile);
 		
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveFile(false);
+			}
+		});
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(mntmSave);
 		
 		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+		mntmSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveFile(true);
+			}
+		});
 		mnFile.add(mntmSaveAs);
 		
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
@@ -224,6 +256,41 @@ public class MainFrame implements MouseInputListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		renderPanel.repaint();
+	}
+	
+	private void openFileDialog() {
+		JFileChooser c = new JFileChooser();
+		int rVal = c.showOpenDialog(frmPcbEditor);
+		if (rVal == JFileChooser.APPROVE_OPTION) {
+			openFile = c.getSelectedFile();
+			try {
+				board = BoardLoader.loadBoard(c.getSelectedFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			renderPanel.setBoard(board);
+		}
+	}
+	
+	private void saveFile(boolean asNew) {
+		if (asNew || (!asNew && openFile == null)) {
+			JFileChooser c = new JFileChooser();
+			int rVal = c.showSaveDialog(frmPcbEditor);
+			if (rVal == JFileChooser.APPROVE_OPTION) {
+				openFile = c.getSelectedFile();
+				try {
+					BoardLoader.saveBoard(board, openFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			try {
+				BoardLoader.saveBoard(board, openFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

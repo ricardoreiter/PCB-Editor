@@ -11,8 +11,8 @@ import se.com.frame.render.Drawable;
 
 public class Track implements Drawable {
 
-	private Pad padA;
-	private Pad padB;
+	transient private Pad padA;
+	transient private Pad padB;
 	private List<Point> points;
 	
 	public Track(Pad pad) {

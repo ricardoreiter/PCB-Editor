@@ -11,8 +11,6 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import se.com.component.Board;
-import se.com.component.BoardComponent;
-import se.com.component.ComponentConfigFactory;
 
 @SuppressWarnings("serial")
 public class PCBRenderPanel extends JPanel {
@@ -24,12 +22,6 @@ public class PCBRenderPanel extends JPanel {
 	public PCBRenderPanel(Board board) {
 		super();
 		setFocusable(true);
-		BoardComponent component = new BoardComponent(ComponentConfigFactory.getInstance().getComponent("resistor"));
-		component.setPos(300, 200);
-		board.addComponent(component);
-		BoardComponent component2 = new BoardComponent(ComponentConfigFactory.getInstance().getComponent("resistor"));
-		component2.setPos(300, 300);
-		board.addComponent(component2);
 		
 		Thread thread = new Thread(new Runnable() {
 			
@@ -47,6 +39,11 @@ public class PCBRenderPanel extends JPanel {
 		});
 		thread.start();
 		
+		this.board = board;
+	}
+	
+	public void setBoard(Board board) {
+		clearTemporaryDrawables();
 		this.board = board;
 	}
 	

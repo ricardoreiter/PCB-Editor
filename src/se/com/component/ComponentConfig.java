@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
 import com.sun.javafx.geom.Line2D;
 import com.sun.javafx.geom.RectBounds;
 
@@ -20,9 +21,16 @@ public class ComponentConfig implements Drawable {
 	public static final Color COMPONENT_COLOR = Color.YELLOW;
 	public static final Color BOUNDS_COLOR = Color.WHITE;
 
+	@Expose
 	private String name;
+	
+	@Expose
 	private Rectangle bounds;
+	
+	@Expose
 	private Polygon shape;
+	
+	@Expose
 	private List<Line2D> pads = new LinkedList<>();
 	
 	public ComponentConfig(String name, Rectangle bounds, Polygon shape, List<Line2D> pads) {
