@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import com.google.gson.Gson;
 
 import se.com.config.GlobalConfig;
+import se.com.util.Line;
 
 public class ComponentConfigFactory {
 
@@ -54,6 +55,7 @@ public class ComponentConfigFactory {
 			String componentString = new String(encoded, StandardCharsets.UTF_8);
 			
 			Gson g = new Gson();
+			System.out.println(g.toJson(new Line(0, 0, 10, 10)));
 			ComponentConfig component = g.fromJson(componentString, ComponentConfig.class);
 			
 			return component;

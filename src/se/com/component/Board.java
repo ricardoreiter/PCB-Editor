@@ -3,6 +3,7 @@ package se.com.component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +11,10 @@ import java.util.stream.Collectors;
 
 import se.com.frame.render.Drawable;
 
-public class Board implements Drawable {
+public class Board implements Drawable, Serializable {
 
+	private static final long serialVersionUID = -7519434690422307644L;
+	
 	private List<BoardComponent> components = new LinkedList<>();
 	private List<Track> tracks = new LinkedList<>();
 

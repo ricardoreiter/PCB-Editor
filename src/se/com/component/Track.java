@@ -3,16 +3,18 @@ package se.com.component;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import se.com.config.GlobalConfig;
 import se.com.frame.render.Drawable;
 
-public class Track implements Drawable {
+public class Track implements Drawable, Serializable {
 
-	transient private Pad padA;
-	transient private Pad padB;
+	private static final long serialVersionUID = -2339474505450151917L;
+	private Pad padA;
+	private Pad padB;
 	private List<Point> points;
 	
 	public Track(Pad pad) {

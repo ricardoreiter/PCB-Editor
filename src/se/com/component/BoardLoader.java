@@ -1,34 +1,31 @@
 package se.com.component;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 public abstract class BoardLoader {
 
 	public static void saveBoard(Board board, File file) throws IOException {
-		Gson g = new Gson();
-		String json = g.toJson(board);
-		FileWriter fileWriter = new FileWriter(file, false);
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file, false));
+		Serializable serializableObject = board;
 		try {
-			fileWriter.write(json);
-			fileWriter.flush();
+			oos.writeObject(serializableObject);
 		} finally {
-			fileWriter.close();
+			oos.close();
 		}
 	}
 	
-	public static Board loadBoard(File file) throws IOException {
-		Gson g = new Gson();
-		FileReader fileReader = new FileReader(file);
+	public static Board loadBoard(File file) throws ClassNotFoundException, IOException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 		try {
-			return g.fromJson(fileReader, Board.class);
+			return (Board) ois.readObject();
 		} finally {
-			fileReader.close();
+			ois.close();
 		}
 	}
 	

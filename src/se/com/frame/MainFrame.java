@@ -20,10 +20,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import se.com.component.Board;
 import se.com.component.BoardLoader;
@@ -78,14 +79,6 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		rightPanel = new JPanel();
 		frmPcbEditor.getContentPane().add(rightPanel, BorderLayout.EAST);
 		rightPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JPanel topPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) topPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		frmPcbEditor.getContentPane().add(topPanel, BorderLayout.NORTH);
-		
-		JToolBar toolBar = new JToolBar();
-		topPanel.add(toolBar);
 		
 		renderPanel = new PCBRenderPanel(board);
 		renderPanel.setBackground(Color.BLACK);
@@ -260,12 +253,13 @@ public class MainFrame implements MouseInputListener, KeyListener {
 	
 	private void openFileDialog() {
 		JFileChooser c = new JFileChooser();
+		c.setFileFilter(new FileNameExtensionFilter("*.pcb", "pcb"));
 		int rVal = c.showOpenDialog(frmPcbEditor);
 		if (rVal == JFileChooser.APPROVE_OPTION) {
 			openFile = c.getSelectedFile();
 			try {
 				board = BoardLoader.loadBoard(c.getSelectedFile());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			renderPanel.setBoard(board);
@@ -275,6 +269,7 @@ public class MainFrame implements MouseInputListener, KeyListener {
 	private void saveFile(boolean asNew) {
 		if (asNew || (!asNew && openFile == null)) {
 			JFileChooser c = new JFileChooser();
+			c.setFileFilter(new FileNameExtensionFilter("*.pcb", "pcb"));
 			int rVal = c.showSaveDialog(frmPcbEditor);
 			if (rVal == JFileChooser.APPROVE_OPTION) {
 				openFile = c.getSelectedFile();

@@ -6,34 +6,26 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gson.annotations.Expose;
-import com.sun.javafx.geom.Line2D;
-import com.sun.javafx.geom.RectBounds;
-
 import se.com.config.GlobalConfig;
 import se.com.frame.render.Drawable;
+import se.com.util.Line;
 
-public class ComponentConfig implements Drawable {
+public class ComponentConfig implements Drawable, Serializable {
 
+	private static final long serialVersionUID = -3360378534521468993L;
 	public static final Color COMPONENT_COLOR = Color.YELLOW;
 	public static final Color BOUNDS_COLOR = Color.WHITE;
 
-	@Expose
 	private String name;
-	
-	@Expose
 	private Rectangle bounds;
-	
-	@Expose
 	private Polygon shape;
+	private List<Line> pads = new LinkedList<>();
 	
-	@Expose
-	private List<Line2D> pads = new LinkedList<>();
-	
-	public ComponentConfig(String name, Rectangle bounds, Polygon shape, List<Line2D> pads) {
+	public ComponentConfig(String name, Rectangle bounds, Polygon shape, List<Line> pads) {
 		this.name = name;
 		this.bounds = bounds;
 		this.shape = shape;
@@ -50,9 +42,8 @@ public class ComponentConfig implements Drawable {
 		
 		g.setColor(COMPONENT_COLOR);
 		g.drawPolygon(shape);
-		for (Line2D pad : pads) {
-			RectBounds bounds = pad.getBounds();
-			g.drawLine((int) bounds.getMinX(), (int) bounds.getMinY(), (int) bounds.getMaxX(), (int) bounds.getMaxY());
+		for (Line pad : pads) {
+			g.drawLine((int) pad.getStartX(), (int) pad.getStartY(), (int) pad.getEndX(), (int) pad.getEndY());
 		}
 	}
 
@@ -66,8 +57,8 @@ public class ComponentConfig implements Drawable {
 	
 	public List<Point> getPadsLocations() {
 		List<Point> result = new LinkedList<>();
-		for (Line2D pad : pads) {
-			result.add(new Point((int) pad.x2, (int) pad.y2)); 
+		for (Line pad : pads) {
+			result.add(new Point((int) pad.getEndX(), (int) pad.getEndY())); 
 		}
 		return result;
 	}

@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,9 +14,10 @@ import se.com.config.GlobalConfig;
  * A graphical object that can be attached children to it
  * @author Ricardo Reiter
  */
-public abstract class GraphicObject implements Drawable {
+public abstract class GraphicObject implements Drawable, Serializable {
 
-	transient private GraphicObject parent;
+	private static final long serialVersionUID = -2594334930572741377L;
+	private GraphicObject parent;
 	private AffineTransform transform = new AffineTransform();
 	protected Point pos;
 	protected int rotation;

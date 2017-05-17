@@ -12,6 +12,7 @@ import se.com.frame.render.GraphicObject;
 
 public class Pad extends GraphicObject {
 	
+	private static final long serialVersionUID = -5858148861127567375L;
 	private List<Track> attachedTracks = new LinkedList<>();
 
 	public Pad(Point pos) {

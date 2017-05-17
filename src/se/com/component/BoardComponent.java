@@ -9,6 +9,7 @@ import se.com.frame.render.GraphicObject;
 
 public class BoardComponent extends GraphicObject {
 
+	private static final long serialVersionUID = 6862662924117934209L;
 	private final ComponentConfig componentConfig;
 	private List<Pad> pads = new LinkedList<>();
 	
