@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,12 +52,12 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	}
 	
 	public Point getPos() {
-		AffineTransform transform = new AffineTransform();
-		transform.rotate(Math.toRadians(rotation), pos.getX(), pos.getY());
-		transform.translate(pos.getX(), pos.getY());
-		Point result = new Point(0, 0);
-		transform.transform(new Point(0, 0), result);
-		return result;
+//		AffineTransform transform = new AffineTransform();
+//		transform.rotate(Math.toRadians(rotation), pos.getX(), pos.getY());
+//		transform.translate(pos.getX(), pos.getY());
+//		Point result = new Point(0, 0);
+//		transform.transform(new Point(0, 0), result);
+		return pos;
 	}
 	
 	private Point getMiddleCalculedPos() {
@@ -65,18 +66,31 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	
 	public void setGlobalPos(Point pos) {
 		if (getParent() != null) {
-			Point parentPos = getParent().getMiddleCalculedPos();
-			setPos(new Point(pos.x - parentPos.x, pos.y - parentPos.y));
+			setPos(getParent().globalPosToLocalPos(pos));
 		} else {
 			setPos(pos);
 		}
 	}
+	
+	public Point localPosToGlobalPos(Point pos) {
+		Point result = new Point();
+		transform.transform(pos, result);
+		return result;
+	}
+	
+	public Point globalPosToLocalPos(Point pos) {
+		Point result = new Point();
+		try {
+			transform.inverseTransform(pos, result);
+		} catch (NoninvertibleTransformException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public Point getGlobalPos() {
 		if (getParent() != null) {
-			Point result = new Point(0, 0);
-			transform.transform(new Point((int) bounds.getCenterX(), (int) bounds.getCenterY()), result);
-			return result;
+			return getParent().localPosToGlobalPos(getPos());
 		}
 		return getPos();
 	}

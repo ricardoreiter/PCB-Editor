@@ -35,7 +35,7 @@ public class Track extends GraphicObject {
 		this.padA = padA;
 		if (padA != null) {
 			padA.attachTrack(this);
-			addPoint(padA.getGlobalPos());
+			addPointWorldPos(padA.getGlobalPos());
 		}
 		
 	}
@@ -52,31 +52,35 @@ public class Track extends GraphicObject {
 		this.padB = padB;
 		if (padB != null) {
 			padB.attachTrack(this);
-			addPoint(padB.getGlobalPos());
+			addPointWorldPos(padB.getGlobalPos());
 		}
 	}
 
 	public void updatePadsLocation() {
 		if (getPadA() != null) {
-			points.set(0, getPadA().getGlobalPos());
+			setPointWorldPos(0, getPadA().getGlobalPos());
 		}
 		if (getPadB() != null) {
-			points.set(points.size()-1, getPadB().getGlobalPos());
+			setPointWorldPos(points.size()-1, getPadB().getGlobalPos());
 		}
 	}
 
-	public void addPoint(Point point) {
-		points.add(point);
+	public void addPointWorldPos(Point point) {
+		points.add(globalPosToLocalPos(point));
 	}
-
+	
+	public void setPointWorldPos(int pos, Point point) {
+		points.set(pos, globalPosToLocalPos(point));
+	}
+	
+	/**
+	 * Get the points of this Track, in Local Position (Relative to its parent)
+	 * @return
+	 */
 	public List<Point> getPoints() {
 		return points;
 	}
 	
-	public Point getLastPoint() {
-		return points.get(points.size() - 1);
-	}
-
 	public void removeLastPoint() {
 		points.remove(points.size() - 1);
 	}
@@ -94,6 +98,14 @@ public class Track extends GraphicObject {
 			g.drawLine(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
 			firstPoint = secondPoint;
 		}
+	}
+
+	public Point getLastPointWorldPos() {
+		return localPosToGlobalPos(points.get(points.size() - 1));
+	}
+
+	public void setLastPointWorldPos(Point point) {
+		points.set(points.size() - 1, globalPosToLocalPos(point));
 	}
 
 }

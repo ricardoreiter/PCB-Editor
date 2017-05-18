@@ -14,21 +14,18 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 	private Track track;
 	private MainFrame mainFrame;
 	private BoardEditorInternalControllerObserver observer;
-	private Point currentPoint;
 	private int angleStep = 15;
 
 	public EditTrackInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer, Track track) {
 		this.mainFrame = mainFrame;
 		this.track = track;
 		this.observer = observer;
-		this.currentPoint = this.track.getLastPoint();
 		this.track.setPadB(null);
 	}
 	
 	public EditTrackInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer, Pad pad) {
 		this(mainFrame, observer, new Track(pad, mainFrame.getBoard()));
-		currentPoint = (Point) track.getLastPoint().clone();
-		track.addPoint(currentPoint); 
+		track.addPointWorldPos(track.getLastPointWorldPos()); 
 		mainFrame.getBoard().addTrack(track);
 	}
 	
@@ -40,12 +37,10 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 				track.setPadB(highlightedPad);
 				observer.notify(this);
 			} else {
-				currentPoint = new Point(e.getPoint());
-				track.addPoint(currentPoint);
+				track.addPointWorldPos(track.getLastPointWorldPos());
 			}
 		} else {
 			track.removeLastPoint();
-			currentPoint = track.getLastPoint();
 			if (track.getPoints().size() == 1) {
 				mainFrame.getBoard().removeTrack(track);
 				observer.notify(this);
@@ -87,10 +82,10 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 		Pad selectedPad = mainFrame.getBoard().getPadAtPos(e.getPoint());
 		if (selectedPad != null) {
 			highlightedPad = selectedPad;
-			currentPoint.setLocation(selectedPad.getGlobalPos());
+			track.setLastPointWorldPos(selectedPad.getGlobalPos());
 		} else {
 			highlightedPad = null;
-			currentPoint.setLocation(adjustPos(track.getPoints().get(track.getPoints().size() - 2), e.getPoint()));
+			track.setLastPointWorldPos(adjustPos(track.localPosToGlobalPos(track.getPoints().get(track.getPoints().size() - 2)), e.getPoint()));
 		}
 	}
 	

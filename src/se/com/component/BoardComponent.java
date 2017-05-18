@@ -25,7 +25,7 @@ public class BoardComponent extends GraphicObject {
 	}
 
 	public BoardComponent(BoardComponent addingComponent, Board board) {
-		this(addingComponent.getConfig(),(Point) addingComponent.getPos().clone(), board);
+		this(addingComponent.getConfig(), board.globalPosToLocalPos(addingComponent.getGlobalPos()), board);
 		this.rotation = addingComponent.getRotation();
 		setTransform(addingComponent.getTransform());
 	}
