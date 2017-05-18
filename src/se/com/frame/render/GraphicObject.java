@@ -24,16 +24,14 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	protected Rectangle bounds;
 	private List<GraphicObject> children = new LinkedList<>();
 	
-	public GraphicObject(Point pos) {
-		this(pos, null);
+	public GraphicObject(Point pos, Rectangle bounds) {
+		this(pos, bounds, null);
 	}
 	
-	public GraphicObject(Point pos, GraphicObject parent) {
-		this.parent = parent;
+	public GraphicObject(Point pos, Rectangle bounds, GraphicObject parent) {
 		this.pos = pos;
-		if (this.parent != null) {
-			parent.addChild(this);
-		}
+		this.bounds = bounds;
+		setParent(parent);
 	}
 	
 	public void setPos(int x, int y) {
@@ -64,6 +62,15 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	private Point getMiddleCalculedPos() {
 		return new Point((int) (pos.getX() - bounds.getCenterX()), (int) (pos.getY() - bounds.getCenterY()));
 	}
+	
+	public void setGlobalPos(Point pos) {
+		if (getParent() != null) {
+			Point parentPos = getParent().getMiddleCalculedPos();
+			setPos(new Point(pos.x - parentPos.x, pos.y - parentPos.y));
+		} else {
+			setPos(pos);
+		}
+	}
 
 	public Point getGlobalPos() {
 		if (getParent() != null) {
@@ -74,7 +81,7 @@ public abstract class GraphicObject implements Drawable, Serializable {
 		return getPos();
 	}
 
-	public Drawable getParent() {
+	public GraphicObject getParent() {
 		return parent;
 	}
 
@@ -99,8 +106,18 @@ public abstract class GraphicObject implements Drawable, Serializable {
 		children.add(obj);
 	}
 	
-	public void removeChild(GraphicObject obj) {
+	private void removeChild(GraphicObject obj) {
 		children.remove(obj);
+	}
+	
+	public void setParent(GraphicObject obj) {
+		if (this.parent != null) 
+			this.parent.removeChild(this);
+		
+		if (obj != null)
+			obj.addChild(this);
+		
+		this.parent = obj;
 	}
 	
 	public Rectangle getBounds() {

@@ -13,20 +13,19 @@ public class BoardComponent extends GraphicObject {
 	private final ComponentConfig componentConfig;
 	private List<Pad> pads = new LinkedList<>();
 	
-	public BoardComponent(ComponentConfig config) {
-		this(config, new Point(0, 0));
+	public BoardComponent(ComponentConfig config, Board board) {
+		this(config, new Point(0, 0), board);
 	}
 	
-	public BoardComponent(ComponentConfig config, Point point) {
-		super(point);
+	public BoardComponent(ComponentConfig config, Point point, Board board) {
+		super(point, config.getBounds(), board);
 		assert config == null : "Violation: config is null";
 		this.componentConfig = config;
-		this.bounds = config.getBounds();
 		createPads();
 	}
 
-	public BoardComponent(BoardComponent addingComponent) {
-		this(addingComponent.getConfig(),(Point) addingComponent.getPos().clone());
+	public BoardComponent(BoardComponent addingComponent, Board board) {
+		this(addingComponent.getConfig(),(Point) addingComponent.getPos().clone(), board);
 		this.rotation = addingComponent.getRotation();
 		setTransform(addingComponent.getTransform());
 	}

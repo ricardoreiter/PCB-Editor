@@ -15,15 +15,15 @@ public class AddComponentInternalController implements BoardEditorInternalContro
 	private MainFrame mainFrame;
 	
 	public AddComponentInternalController(ComponentConfig component, BoardEditorInternalControllerObserver observer, MainFrame mainFrame) {
-		this.component = new BoardComponent(component);
+		this.component = new BoardComponent(component, null);
 		this.observer = observer;
 		this.mainFrame = mainFrame;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		component.setPos(e.getPoint());
-		lastAddedComponent = new BoardComponent(component);
+		lastAddedComponent = new BoardComponent(component, mainFrame.getBoard());
+		lastAddedComponent.setGlobalPos(e.getPoint());
 		mainFrame.getBoard().addComponent(lastAddedComponent);
 		if (observer != null)
 			observer.notify(this);
@@ -74,7 +74,7 @@ public class AddComponentInternalController implements BoardEditorInternalContro
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		component.setPos(e.getPoint());
+		component.setGlobalPos(e.getPoint());
 	}
 	
 	@Override

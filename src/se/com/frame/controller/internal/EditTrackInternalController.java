@@ -26,7 +26,7 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 	}
 	
 	public EditTrackInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer, Pad pad) {
-		this(mainFrame, observer, new Track(pad));
+		this(mainFrame, observer, new Track(pad, mainFrame.getBoard()));
 		currentPoint = (Point) track.getLastPoint().clone();
 		track.addPoint(currentPoint); 
 		mainFrame.getBoard().addTrack(track);

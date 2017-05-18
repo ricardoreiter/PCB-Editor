@@ -61,8 +61,9 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (oldPoint != null) {
-			Point diff = new Point((component.getPos().x) - (oldPoint.x - e.getX()), (component.getPos().y) - (oldPoint.y - e.getY()));
-			component.setPos(diff);
+			Point globalPos = component.getGlobalPos();
+			Point diff = new Point((globalPos.x) - (oldPoint.x - e.getX()), (globalPos.y) - (oldPoint.y - e.getY()));
+			component.setGlobalPos(diff);
 		}
 		oldPoint = e.getPoint();
 	}

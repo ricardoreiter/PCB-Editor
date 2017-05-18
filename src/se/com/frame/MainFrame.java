@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -23,7 +25,6 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import se.com.component.Board;
@@ -38,7 +39,7 @@ public class MainFrame implements MouseInputListener, KeyListener {
 	private JFrame frmPcbEditor;
 	private JPanel rightPanel;
 	private PCBRenderPanel renderPanel;
-	private Board board = new Board();
+	private Board board = new Board(new Point(200, 200), new Rectangle(0, 0, 300, 300), 15);
 	private File openFile = null;
 	private MainFrameController controller;
 
@@ -94,9 +95,13 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		JMenuItem mntmNew = new JMenuItem("New");
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				openFile = null;
-				board = new Board();
-				renderPanel.setBoard(board);
+				NewBoardConfigurationDialog newBoardConfigurationDialog = new NewBoardConfigurationDialog();
+				int result = newBoardConfigurationDialog.doModal();
+				if (result == NewBoardConfigurationDialog.ID_OK) {
+					openFile = null;
+					board = newBoardConfigurationDialog.getBoard();
+					renderPanel.setBoard(board);
+				}
 			}
 		});
 		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));

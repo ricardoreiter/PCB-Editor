@@ -3,21 +3,22 @@ package se.com.component;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.io.Serializable;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import se.com.config.GlobalConfig;
-import se.com.frame.render.Drawable;
+import se.com.frame.render.GraphicObject;
 
-public class Track implements Drawable, Serializable {
+public class Track extends GraphicObject {
 
 	private static final long serialVersionUID = -2339474505450151917L;
 	private Pad padA;
 	private Pad padB;
 	private List<Point> points;
 	
-	public Track(Pad pad) {
+	public Track(Pad pad, GraphicObject parent) {
+		super(new Point(), new Rectangle(), parent);
 		points = new ArrayList<>();
 		setPadA(pad);
 	}
@@ -55,21 +56,6 @@ public class Track implements Drawable, Serializable {
 		}
 	}
 
-	@Override
-	public void paint(Graphics2D g) {
-		g.setColor(GlobalConfig.getInstance().getTrackColor());
-		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getTrackWidth()));
-		
-		updatePadsLocation();
-		
-		Point firstPoint = points.get(0);
-		for (int i = 1; i < points.size(); i++) {
-			Point secondPoint = points.get(i);
-			g.drawLine(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
-			firstPoint = secondPoint;
-		}
-	}
-
 	public void updatePadsLocation() {
 		if (getPadA() != null) {
 			points.set(0, getPadA().getGlobalPos());
@@ -93,6 +79,21 @@ public class Track implements Drawable, Serializable {
 
 	public void removeLastPoint() {
 		points.remove(points.size() - 1);
+	}
+
+	@Override
+	public void internalPaint(Graphics2D g) {
+		g.setColor(GlobalConfig.getInstance().getTrackColor());
+		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getTrackWidth()));
+		
+		updatePadsLocation();
+		
+		Point firstPoint = points.get(0);
+		for (int i = 1; i < points.size(); i++) {
+			Point secondPoint = points.get(i);
+			g.drawLine(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
+			firstPoint = secondPoint;
+		}
 	}
 
 }

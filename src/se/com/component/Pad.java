@@ -16,12 +16,11 @@ public class Pad extends GraphicObject {
 	private List<Track> attachedTracks = new LinkedList<>();
 
 	public Pad(Point pos) {
-		super(pos);
+		this(pos, null);
 	}
 	
 	public Pad(Point pos, GraphicObject parent) {
-		super(pos, parent);
-		bounds = new Rectangle(0, 0, 9, 9);
+		super(pos, new Rectangle(0, 0, 9, 9), parent);
 	}
 
 	public void attachTrack(Track track) {
