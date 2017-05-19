@@ -34,6 +34,8 @@ public class NewBoardConfigurationDialog extends JDialog {
 	private JLabel lblBoardheigth;
 	private JLabel lblBoardComponentSpacing;
 	private Board board;
+	private JLabel lblLayers;
+	private JTextField txtLayers;
 
 	public int doModal() {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -47,7 +49,7 @@ public class NewBoardConfigurationDialog extends JDialog {
 	 */
 	public NewBoardConfigurationDialog() {
 		setTitle("New Board");
-		setBounds(100, 100, 288, 154);
+		setBounds(100, 100, 288, 180);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -86,6 +88,17 @@ public class NewBoardConfigurationDialog extends JDialog {
 		contentPanel.add(lblBoardComponentSpacing);
 		contentPanel.add(txtBoardComponentSpacing);
 		{
+			lblLayers = new JLabel("Layers");
+			lblLayers.setHorizontalAlignment(SwingConstants.CENTER);
+			contentPanel.add(lblLayers);
+		}
+		{
+			txtLayers = new JTextField();
+			txtLayers.setText("1");
+			contentPanel.add(txtLayers);
+			txtLayers.setColumns(10);
+		}
+		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -98,8 +111,13 @@ public class NewBoardConfigurationDialog extends JDialog {
 							int height = Integer.valueOf(txtBoardHeigth.getText());
 							int width = Integer.valueOf(txtBoardWidth.getText());
 							int workableArea = Integer.valueOf(txtBoardComponentSpacing.getText());
+							int layers = Integer.valueOf(txtLayers.getText());
+							if (layers > 4) {
+								JOptionPane.showMessageDialog(frame, "Maximum layers number is 4!", "Error", JOptionPane.ERROR_MESSAGE);
+								return;
+							}
 							exitCode = ID_OK;
-							board = new Board(new Point(width / 2, height / 2), new Rectangle(0, 0, width, height), workableArea);
+							board = new Board(new Point(width / 2, height / 2), new Rectangle(0, 0, width, height), workableArea, layers);
 							setVisible(false);
 						} catch (NumberFormatException exception) {
 							JOptionPane.showMessageDialog(frame, "Some values are invalid!", "Error", JOptionPane.ERROR_MESSAGE);

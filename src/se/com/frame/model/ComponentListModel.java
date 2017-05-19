@@ -1,4 +1,4 @@
-package se.com.frame;
+package se.com.frame.model;
 
 import java.util.ArrayList;
 import java.util.List;

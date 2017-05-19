@@ -39,7 +39,7 @@ public class MainFrame implements MouseInputListener, KeyListener {
 	private JFrame frmPcbEditor;
 	private JPanel rightPanel;
 	private PCBRenderPanel renderPanel;
-	private Board board = new Board(new Point(200, 200), new Rectangle(0, 0, 300, 300), 15);
+	private Board board = new Board(new Point(200, 200), new Rectangle(0, 0, 300, 300), 15, 1);
 	private File openFile = null;
 	private MainFrameController controller;
 
@@ -99,7 +99,7 @@ public class MainFrame implements MouseInputListener, KeyListener {
 				int result = newBoardConfigurationDialog.doModal();
 				if (result == NewBoardConfigurationDialog.ID_OK) {
 					openFile = null;
-					board = newBoardConfigurationDialog.getBoard();
+					setBoard(newBoardConfigurationDialog.getBoard());
 					renderPanel.setBoard(board);
 				}
 			}
@@ -173,6 +173,18 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		
 		JMenuItem mntmOptions = new JMenuItem("Options");
 		mnEdit.add(mntmOptions);
+		
+		JMenu mnView = new JMenu("View");
+		menuBar.add(mnView);
+		
+		JMenuItem mntmItemShoppingList = new JMenuItem("Item Shopping List");
+		mntmItemShoppingList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShoppingListDialog shoppingListDialog = new ShoppingListDialog(board);
+				shoppingListDialog.doModal();
+			}
+		});
+		mnView.add(mntmItemShoppingList);
 		setController(ComponentEditModeController.class);
 		renderPanel.addMouseMotionListener(this);
 		renderPanel.addMouseListener(this);
@@ -205,6 +217,11 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		return renderPanel;
 	}
 
+	private void setBoard(Board board) {
+		this.board = board;
+		setController(ComponentEditModeController.class);
+	}
+	
 	public Board getBoard() {
 		return board;
 	}
@@ -263,7 +280,7 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		if (rVal == JFileChooser.APPROVE_OPTION) {
 			openFile = c.getSelectedFile();
 			try {
-				board = BoardLoader.loadBoard(c.getSelectedFile());
+				setBoard(BoardLoader.loadBoard(c.getSelectedFile()));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

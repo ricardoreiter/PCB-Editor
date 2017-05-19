@@ -7,7 +7,7 @@ public class GlobalConfig {
 	private boolean showComponentBounds = false;
 	private String componentsConfigFolder = "./components";
 	private String componentsConfigExtension = ".pcbcomponent";
-	private Color trackColor = Color.GREEN;
+	private Color[] trackColor = {Color.GREEN, Color.RED, Color.ORANGE, Color.CYAN};
 	private Color boardColor = Color.RED;
 	private Color workableAreaColor = Color.YELLOW;
 	private int componentsGlobalBoundsSizeBonus = 2;
@@ -48,8 +48,8 @@ public class GlobalConfig {
 		this.highlightBoxWidth = highlightBoxWidth;
 	}
 
-	public void setTrackColor(Color trackColor) {
-		this.trackColor = trackColor;
+	public void setTrackColor(int layer, Color trackColor) {
+		this.trackColor[layer] = trackColor;
 	}
 
 	private static GlobalConfig instance = new GlobalConfig();
@@ -85,8 +85,8 @@ public class GlobalConfig {
 		this.componentsConfigExtension = componentsConfigExtension;
 	}
 
-	public Color getTrackColor() {
-		return trackColor;
+	public Color getTrackColor(int layer) {
+		return trackColor[layer];
 	}
 
 	public int getComponentsGlobalBoundsSizeBonus() {

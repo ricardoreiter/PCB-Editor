@@ -23,8 +23,8 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 		this.track.setPadB(null);
 	}
 	
-	public EditTrackInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer, Pad pad) {
-		this(mainFrame, observer, new Track(pad, mainFrame.getBoard()));
+	public EditTrackInternalController(MainFrame mainFrame, BoardEditorInternalControllerObserver observer, Pad pad, int layer) {
+		this(mainFrame, observer, new Track(pad, mainFrame.getBoard(), layer));
 		track.addPointWorldPos(track.getLastPointWorldPos()); 
 		mainFrame.getBoard().addTrack(track);
 	}

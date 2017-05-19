@@ -17,10 +17,12 @@ public class Board extends GraphicObject {
 	private List<BoardComponent> components = new LinkedList<>();
 	private List<Track> tracks = new LinkedList<>();
 	private int workableAreaConstraint;
+	private int layers;
 
-	public Board(Point pos, Rectangle boardSize, int workableAreaConstraint) {
+	public Board(Point pos, Rectangle boardSize, int workableAreaConstraint, int layers) {
 		super(pos, boardSize);
 		this.workableAreaConstraint = workableAreaConstraint;
+		this.layers = layers;
 	}
 
 	public void addComponent(BoardComponent component) {
@@ -82,6 +84,18 @@ public class Board extends GraphicObject {
 		g.setColor(GlobalConfig.getInstance().getWorkableAreaColor());
 		Rectangle workableArea = getWorkableArea();
 		g.drawRect(workableArea.x, workableArea.y, workableArea.width, workableArea.height);
+	}
+
+	public List<BoardComponent> getComponents() {
+		return components;
+	}
+
+	public int getLayers() {
+		return layers;
+	}
+
+	public void setLayers(int layers) {
+		this.layers = layers;
 	}
 
 }

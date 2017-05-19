@@ -16,10 +16,12 @@ public class Track extends GraphicObject {
 	private Pad padA;
 	private Pad padB;
 	private List<Point> points;
+	private int layer;
 	
-	public Track(Pad pad, GraphicObject parent) {
+	public Track(Pad pad, GraphicObject parent, int layer) {
 		super(new Point(), new Rectangle(), parent);
 		points = new ArrayList<>();
+		this.layer = layer;
 		setPadA(pad);
 	}
 	
@@ -87,7 +89,7 @@ public class Track extends GraphicObject {
 
 	@Override
 	public void internalPaint(Graphics2D g) {
-		g.setColor(GlobalConfig.getInstance().getTrackColor());
+		g.setColor(GlobalConfig.getInstance().getTrackColor(layer));
 		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getTrackWidth()));
 		
 		updatePadsLocation();

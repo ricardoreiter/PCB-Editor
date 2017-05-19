@@ -33,7 +33,7 @@ public class Pad extends GraphicObject {
 	
 	@Override
 	public void internalPaint(Graphics2D g) {
-		g.setColor(GlobalConfig.getInstance().getTrackColor());
+		g.setColor(GlobalConfig.getInstance().getTrackColor(0));
 		g.setStroke(new BasicStroke(GlobalConfig.getInstance().getPadWidth()));
 		g.fillOval(0, 0, 10, 10);
 	}

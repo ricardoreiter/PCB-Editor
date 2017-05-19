@@ -14,7 +14,6 @@ import javax.swing.event.ListSelectionListener;
 import se.com.component.BoardComponent;
 import se.com.component.ComponentConfig;
 import se.com.component.ComponentConfigFactory;
-import se.com.frame.ComponentListModel;
 import se.com.frame.EditComponentsPanel;
 import se.com.frame.MainFrame;
 import se.com.frame.controller.internal.AddComponentInternalController;
@@ -22,6 +21,7 @@ import se.com.frame.controller.internal.BoardEditorInternalController;
 import se.com.frame.controller.internal.BoardEditorInternalControllerObserver;
 import se.com.frame.controller.internal.MovingComponentInternalController;
 import se.com.frame.controller.internal.SelectingComponentInternalController;
+import se.com.frame.model.ComponentListModel;
 import se.com.frame.model.SelectedComponentTableModel;
 
 public class ComponentEditModeController extends MainFrameController implements ListSelectionListener, BoardEditorInternalControllerObserver {

@@ -23,6 +23,7 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	protected Point pos;
 	protected int rotation;
 	protected Rectangle bounds;
+	protected int drawOrder; //TODO
 	private List<GraphicObject> children = new LinkedList<>();
 	
 	public GraphicObject(Point pos, Rectangle bounds) {
@@ -52,11 +53,6 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	}
 	
 	public Point getPos() {
-//		AffineTransform transform = new AffineTransform();
-//		transform.rotate(Math.toRadians(rotation), pos.getX(), pos.getY());
-//		transform.translate(pos.getX(), pos.getY());
-//		Point result = new Point(0, 0);
-//		transform.transform(new Point(0, 0), result);
 		return pos;
 	}
 	
