@@ -6,8 +6,8 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import se.com.config.GlobalConfig;
 
@@ -15,7 +15,7 @@ import se.com.config.GlobalConfig;
  * A graphical object that can be attached children to it
  * @author Ricardo Reiter
  */
-public abstract class GraphicObject implements Drawable, Serializable {
+public abstract class GraphicObject implements Drawable, Serializable, Comparable<GraphicObject> {
 
 	private static final long serialVersionUID = -2594334930572741377L;
 	private GraphicObject parent;
@@ -23,16 +23,17 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	protected Point pos;
 	protected int rotation;
 	protected Rectangle bounds;
-	protected int drawOrder; //TODO
-	private List<GraphicObject> children = new LinkedList<>();
+	protected int drawOrder;
+	private ArrayList<GraphicObject> children = new ArrayList<>();
 	
-	public GraphicObject(Point pos, Rectangle bounds) {
-		this(pos, bounds, null);
+	public GraphicObject(Point pos, Rectangle bounds, int drawOrder) {
+		this(pos, bounds, drawOrder, null);
 	}
 	
-	public GraphicObject(Point pos, Rectangle bounds, GraphicObject parent) {
+	public GraphicObject(Point pos, Rectangle bounds, int drawOrder, GraphicObject parent) {
 		this.pos = pos;
 		this.bounds = bounds;
+		this.drawOrder = drawOrder;
 		setParent(parent);
 	}
 	
@@ -113,7 +114,11 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	}
 	
 	private void addChild(GraphicObject obj) {
-		children.add(obj);
+		int pos = Collections.binarySearch(children, obj);
+		if (pos < 0) {
+			pos = -pos - 1;
+		}
+		children.add(pos, obj);
 	}
 	
 	private void removeChild(GraphicObject obj) {
@@ -151,6 +156,15 @@ public abstract class GraphicObject implements Drawable, Serializable {
 	public void setTransform(AffineTransform transform) {
 		this.transform = transform;
 	}
+	
+	 public int compareTo(GraphicObject o) {
+		 if (this.drawOrder < o.drawOrder) {
+			 return -1;
+		 } else if (this.drawOrder == o.drawOrder) {
+			 return 0;
+		 }
+		 return 1;
+	 }
 	
 	public abstract void internalPaint(Graphics2D g);
 

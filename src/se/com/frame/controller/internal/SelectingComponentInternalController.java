@@ -44,13 +44,16 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 				mainFrame.getRenderPanel().addTemporaryDrawable(selectedComponentBox);
 			}
 		} else {
-			mainFrame.getRenderPanel().removeTemporaryDrawable(selectedComponentBox);
-			
-			selectedComponent = null;
-			componentHighlighted = null;
-			selectedComponentBox = null;
+			unselectSelectedComponent();
 		}
 		observer.notify(this);
+	}
+
+	private void unselectSelectedComponent() {
+		mainFrame.getRenderPanel().removeTemporaryDrawable(selectedComponentBox);
+		
+		selectedComponent = null;
+		selectedComponentBox = null;
 	}
 
 	@Override
@@ -105,6 +108,12 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 		if (e.getKeyCode() == KeyEvent.VK_R) {
 			if (selectedComponent != null) {
 				selectedComponent.rotate();
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+			if (selectedComponent != null) {
+				selectedComponent.setParent(null);
+				mainFrame.getBoard().removeComponent(selectedComponent);
+				unselectSelectedComponent();
 			}
 		}
 	}

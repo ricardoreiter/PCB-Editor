@@ -18,7 +18,7 @@ public class BoardComponent extends GraphicObject {
 	}
 	
 	public BoardComponent(ComponentConfig config, Point point, Board board) {
-		super(point, config.getBounds(), board);
+		super(point, config.getBounds(), 100, board);
 		assert config == null : "Violation: config is null";
 		this.componentConfig = config;
 		createPads();

@@ -3,6 +3,7 @@ package se.com.component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 import se.com.config.GlobalConfig;
 import se.com.frame.render.GraphicObject;
+import se.com.util.Line;
 
 public class Board extends GraphicObject {
 
@@ -20,13 +22,25 @@ public class Board extends GraphicObject {
 	private int layers;
 
 	public Board(Point pos, Rectangle boardSize, int workableAreaConstraint, int layers) {
-		super(pos, boardSize);
+		super(pos, boardSize, 0);
 		this.workableAreaConstraint = workableAreaConstraint;
 		this.layers = layers;
 	}
 
 	public void addComponent(BoardComponent component) {
 		components.add(component);
+	}
+	
+	public void removeComponent(BoardComponent component) {
+		List<Pad> pads = component.getPads();
+		for (Pad p : pads) {
+			List<Track> tracks = new LinkedList<>();
+			tracks.addAll(p.getAttachedTracks());
+			for (Track t : tracks) {
+				removeTrack(t);
+			}
+		}
+		components.remove(component);
 	}
 	
 	public BoardComponent getComponentAtPos(Point point) {
@@ -98,4 +112,18 @@ public class Board extends GraphicObject {
 		this.layers = layers;
 	}
 
+	public List<GraphicObject> getElementsAlongLine(Line line, int layer, HashSet<GraphicObject> ignoreList) {
+		List<GraphicObject> result = new LinkedList<>();
+		for (Track t : tracks) {
+			if (!ignoreList.contains(t)) {
+				if (t.getLayer() == layer) {
+					if (t.collide(line)) {
+						result.add(t);
+					}
+				}
+			}
+		}
+		return result;
+	}
+		
 }

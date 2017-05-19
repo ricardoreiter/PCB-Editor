@@ -117,7 +117,7 @@ public class NewBoardConfigurationDialog extends JDialog {
 								return;
 							}
 							exitCode = ID_OK;
-							board = new Board(new Point(width / 2, height / 2), new Rectangle(0, 0, width, height), workableArea, layers);
+							board = new Board(new Point((width / 2) + 50, (height / 2) + 50), new Rectangle(0, 0, width, height), workableArea, layers);
 							setVisible(false);
 						} catch (NumberFormatException exception) {
 							JOptionPane.showMessageDialog(frame, "Some values are invalid!", "Error", JOptionPane.ERROR_MESSAGE);

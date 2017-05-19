@@ -3,10 +3,14 @@ package se.com.frame.controller.internal;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
+import java.util.List;
 
 import se.com.component.Pad;
 import se.com.component.Track;
 import se.com.frame.MainFrame;
+import se.com.frame.render.GraphicObject;
+import se.com.util.Line;
 
 public class EditTrackInternalController implements BoardEditorInternalController {
 
@@ -32,16 +36,26 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (highlightedPad != null) {
-				track.removeLastPoint();
-				track.setPadB(highlightedPad);
-				observer.notify(this);
-			} else {
-				track.addPointWorldPos(track.getLastPointWorldPos());
+			
+			Point lastLastPoint = track.localPosToGlobalPos(track.getPoints().get(track.getPoints().size() - 2));
+			HashSet<GraphicObject> ignoreList = new HashSet<>();
+			ignoreList.add(track);
+			ignoreList.add(highlightedPad);
+			//TODO: Ver como ignorar pad que inicia, e colisão de linhas quando duas começam no mesmo pad (dá colisão pois o primeiro ou ultimo ponto são iguais)
+			List<GraphicObject> elements = mainFrame.getBoard().getElementsAlongLine(new Line(lastLastPoint.x, lastLastPoint.y, track.getLastPointWorldPos().x, track.getLastPointWorldPos().y), track.getLayer(), ignoreList);
+			if (elements.isEmpty()) {
+				if (highlightedPad != null) {
+					track.removeLastPoint();
+					track.setPadB(highlightedPad);
+					observer.notify(this);
+				} else {
+					track.addPointWorldPos(track.getLastPointWorldPos());
+				}
 			}
 		} else {
 			track.removeLastPoint();
 			if (track.getPoints().size() == 1) {
+				track.setParent(null);
 				mainFrame.getBoard().removeTrack(track);
 				observer.notify(this);
 			}
@@ -50,31 +64,22 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -120,14 +125,10 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void startController() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

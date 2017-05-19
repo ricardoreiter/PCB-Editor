@@ -20,7 +20,7 @@ public class Pad extends GraphicObject {
 	}
 	
 	public Pad(Point pos, GraphicObject parent) {
-		super(pos, new Rectangle(0, 0, 9, 9), parent);
+		super(pos, new Rectangle(0, 0, 9, 9), 50, parent);
 	}
 
 	public void attachTrack(Track track) {

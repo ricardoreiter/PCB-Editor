@@ -7,8 +7,11 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.javafx.geom.Line2D;
+
 import se.com.config.GlobalConfig;
 import se.com.frame.render.GraphicObject;
+import se.com.util.Line;
 
 public class Track extends GraphicObject {
 
@@ -19,7 +22,7 @@ public class Track extends GraphicObject {
 	private int layer;
 	
 	public Track(Pad pad, GraphicObject parent, int layer) {
-		super(new Point(), new Rectangle(), parent);
+		super(new Point(), new Rectangle(), 40-layer, parent);
 		points = new ArrayList<>();
 		this.layer = layer;
 		setPadA(pad);
@@ -108,6 +111,24 @@ public class Track extends GraphicObject {
 
 	public void setLastPointWorldPos(Point point) {
 		points.set(points.size() - 1, globalPosToLocalPos(point));
+	}
+
+	public int getLayer() {
+		return layer;
+	}
+
+	public boolean collide(Line line) {
+		Point startLocalPos = globalPosToLocalPos(line.getStart());
+		Point endLocalPos = globalPosToLocalPos(line.getEnd());
+		Point firstPoint = points.get(0);
+		for (int i = 1; i < points.size(); i++) {
+			Point secondPoint = points.get(i);
+			if (Line2D.linesIntersect(startLocalPos.x, startLocalPos.y, endLocalPos.x, endLocalPos.y, firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y)) {
+				return true;
+			}
+			firstPoint = secondPoint;
+		}
+		return false;
 	}
 
 }

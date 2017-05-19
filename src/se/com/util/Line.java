@@ -1,5 +1,6 @@
 package se.com.util;
 
+import java.awt.Point;
 import java.io.Serializable;
 
 public class Line implements Serializable {
@@ -18,6 +19,10 @@ public class Line implements Serializable {
 		this.endY = endY;
 	}
 	
+	public Line(Point startLocalPos, Point endLocalPos) {
+		this(startLocalPos.x, startLocalPos.y, endLocalPos.x, endLocalPos.y);
+	}
+
 	public int getStartX() {
 		return startX;
 	}
@@ -41,6 +46,14 @@ public class Line implements Serializable {
 	}
 	public void setEndY(int endY) {
 		this.endY = endY;
+	}
+
+	public Point getEnd() {
+		return new Point(endX, endY);
+	}
+
+	public Point getStart() {
+		return new Point(startX, startY);
 	}
 
 }
