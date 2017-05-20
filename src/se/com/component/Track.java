@@ -120,9 +120,24 @@ public class Track extends GraphicObject {
 	public boolean collide(Line line) {
 		Point startLocalPos = globalPosToLocalPos(line.getStart());
 		Point endLocalPos = globalPosToLocalPos(line.getEnd());
-		Point firstPoint = points.get(0);
-		for (int i = 1; i < points.size(); i++) {
-			Point secondPoint = points.get(i);
+		
+		int startIndex = 0;
+		Point firstPoint = points.get(startIndex++);
+		// If the line is starting/ending in the same point, we have to ignore the intersect, 
+		// because they are starting/ending at the same position
+		if (firstPoint.equals(startLocalPos) || firstPoint.equals(endLocalPos)) {
+			firstPoint = points.get(startIndex++);
+		}
+		
+		int lastIndex = points.size() - 1;
+		Point lastPoint = points.get(lastIndex);
+		// Same as above
+		if (lastPoint.equals(startLocalPos) || lastPoint.equals(endLocalPos)) {
+			lastIndex--;
+		}
+		
+		for (; startIndex <= lastIndex; startIndex++) {
+			Point secondPoint = points.get(startIndex);
 			if (Line2D.linesIntersect(startLocalPos.x, startLocalPos.y, endLocalPos.x, endLocalPos.y, firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y)) {
 				return true;
 			}

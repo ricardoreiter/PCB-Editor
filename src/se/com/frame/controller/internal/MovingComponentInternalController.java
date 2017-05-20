@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import se.com.component.Board;
 import se.com.component.BoardComponent;
 
 public class MovingComponentInternalController implements BoardEditorInternalController {
@@ -13,12 +14,14 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 	private int movingComponentInitialRotation;
 	private BoardEditorInternalControllerObserver observer;
 	private Point oldPoint;
+	private Board board;
 	
-	public MovingComponentInternalController(BoardComponent component, BoardEditorInternalControllerObserver observer) {
+	public MovingComponentInternalController(BoardComponent component, BoardEditorInternalControllerObserver observer, Board board) {
 		this.component = component;
 		this.movingComponentInitialPos = (Point) component.getPos().clone();
 		this.movingComponentInitialRotation = component.getRotation();
 		this.observer = observer;
+		this.board = board;
 	}
 	
 	@Override
@@ -31,6 +34,10 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (!board.isInsideWorkableArea(component.getGlobalBounds())) {
+			component.setPos(movingComponentInitialPos);
+			component.setRotation(movingComponentInitialRotation);
+		}
 		if (observer != null)
 			observer.notify(this);
 	}

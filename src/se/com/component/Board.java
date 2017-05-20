@@ -3,6 +3,7 @@ package se.com.component;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,11 +112,23 @@ public class Board extends GraphicObject {
 	public void setLayers(int layers) {
 		this.layers = layers;
 	}
+	
+	/**
+	 * Check if the line is free to create a track. Should not have any tracks/pads on the way.
+	 * @param line in Global Pos
+	 * @param layer
+	 * @param ignoreList
+	 * @return path is free
+	 */
+	public boolean isLineFree(Line line, int layer, GraphicObject... ignoreList) {
+		return getElementsAlongLine(line, layer, ignoreList).size() == 0;
+	}
 
-	public List<GraphicObject> getElementsAlongLine(Line line, int layer, HashSet<GraphicObject> ignoreList) {
+	public List<GraphicObject> getElementsAlongLine(Line line, int layer, GraphicObject... ignoreList) {
+		HashSet<GraphicObject> ignoreSet = new HashSet<>(Arrays.asList(ignoreList));
 		List<GraphicObject> result = new LinkedList<>();
 		for (Track t : tracks) {
-			if (!ignoreList.contains(t)) {
+			if (!ignoreSet.contains(t)) {
 				if (t.getLayer() == layer) {
 					if (t.collide(line)) {
 						result.add(t);
@@ -123,7 +136,35 @@ public class Board extends GraphicObject {
 				}
 			}
 		}
+		for (BoardComponent c : components) {
+			if (!ignoreSet.contains(c)) {
+				if (c.collide(line, ignoreSet)) {
+					result.add(c);
+				}
+			}
+		}
 		return result;
+	}
+
+	/**
+	 * Check if line is inside the workable area
+	 * @param line in Global Pos
+	 * @return
+	 */
+	public boolean isInsideWorkableArea(Line line) {
+		Rectangle rect = getWorkableArea();
+		return rect.contains(globalPosToLocalPos(line.getStart())) && rect.contains(globalPosToLocalPos(line.getEnd()));
+	}
+	
+	/**
+	 * Check if rect is inside the workable area
+	 * @param rect
+	 * @return
+	 */
+	public boolean isInsideWorkableArea(Rectangle rect) {
+		Rectangle workableArea = getWorkableArea();
+		rect.setLocation(globalPosToLocalPos(rect.getLocation()));
+		return workableArea.contains(rect);
 	}
 		
 }

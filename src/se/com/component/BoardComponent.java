@@ -2,10 +2,12 @@ package se.com.component;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import se.com.frame.render.GraphicObject;
+import se.com.util.Line;
 
 public class BoardComponent extends GraphicObject {
 
@@ -52,6 +54,23 @@ public class BoardComponent extends GraphicObject {
 
 	public void rotate() {
 		setRotation(getRotation() + 90);
+	}
+
+	/**
+	 * Check if the line collides with some pad.
+	 * @param line
+	 * @param ignoreSet
+	 * @return
+	 */
+	public boolean collide(Line line, HashSet<GraphicObject> ignoreSet) {
+		for (Pad p : pads) {
+			if (!ignoreSet.contains(p)) {
+				if (p.collide(line)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }

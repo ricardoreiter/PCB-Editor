@@ -22,11 +22,13 @@ public class AddComponentInternalController implements BoardEditorInternalContro
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		lastAddedComponent = new BoardComponent(component, mainFrame.getBoard());
-		lastAddedComponent.setGlobalPos(e.getPoint());
-		mainFrame.getBoard().addComponent(lastAddedComponent);
-		if (observer != null)
-			observer.notify(this);
+		if (mainFrame.getBoard().isInsideWorkableArea(component.getGlobalBounds())) {
+			lastAddedComponent = new BoardComponent(component, mainFrame.getBoard());
+			lastAddedComponent.setGlobalPos(e.getPoint());
+			mainFrame.getBoard().addComponent(lastAddedComponent);
+			if (observer != null)
+				observer.notify(this);
+		}
 	}
 
 	@Override
@@ -65,6 +67,10 @@ public class AddComponentInternalController implements BoardEditorInternalContro
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_R) {
 			component.rotate();
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			lastAddedComponent = null;
+			if (observer != null)
+				observer.notify(this);
 		}
 	}
 

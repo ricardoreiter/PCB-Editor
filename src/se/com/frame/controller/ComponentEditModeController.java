@@ -38,7 +38,7 @@ public class ComponentEditModeController extends MainFrameController implements 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (internalController instanceof SelectingComponentInternalController && selectedComponent != null) {
-			setNewInternalController(new MovingComponentInternalController(selectedComponent, this));
+			setNewInternalController(new MovingComponentInternalController(selectedComponent, this, mainFrame.getBoard()));
 		}
 		super.mouseDragged(e);
 	}

@@ -3,13 +3,11 @@ package se.com.frame.controller.internal;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.HashSet;
-import java.util.List;
 
+import se.com.component.Board;
 import se.com.component.Pad;
 import se.com.component.Track;
 import se.com.frame.MainFrame;
-import se.com.frame.render.GraphicObject;
 import se.com.util.Line;
 
 public class EditTrackInternalController implements BoardEditorInternalController {
@@ -35,15 +33,11 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		Board board = mainFrame.getBoard();
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			
 			Point lastLastPoint = track.localPosToGlobalPos(track.getPoints().get(track.getPoints().size() - 2));
-			HashSet<GraphicObject> ignoreList = new HashSet<>();
-			ignoreList.add(track);
-			ignoreList.add(highlightedPad);
-			//TODO: Ver como ignorar pad que inicia, e colisão de linhas quando duas começam no mesmo pad (dá colisão pois o primeiro ou ultimo ponto são iguais)
-			List<GraphicObject> elements = mainFrame.getBoard().getElementsAlongLine(new Line(lastLastPoint.x, lastLastPoint.y, track.getLastPointWorldPos().x, track.getLastPointWorldPos().y), track.getLayer(), ignoreList);
-			if (elements.isEmpty()) {
+			Line line = new Line(lastLastPoint.x, lastLastPoint.y, track.getLastPointWorldPos().x, track.getLastPointWorldPos().y);
+			if (board.isLineFree(line, track.getLayer(), track, highlightedPad, track.getPadA()) && board.isInsideWorkableArea(line)) {
 				if (highlightedPad != null) {
 					track.removeLastPoint();
 					track.setPadB(highlightedPad);
@@ -56,7 +50,7 @@ public class EditTrackInternalController implements BoardEditorInternalControlle
 			track.removeLastPoint();
 			if (track.getPoints().size() == 1) {
 				track.setParent(null);
-				mainFrame.getBoard().removeTrack(track);
+				board.removeTrack(track);
 				observer.notify(this);
 			}
 		}
