@@ -44,28 +44,8 @@ public class Pad extends GraphicObject {
 		attachedTracks.remove(track);
 	}
 	
-	private boolean intersects(Point pointA, Point pointB) {
-        double baX = pointB.x - pointA.x;
-        double baY = pointB.y - pointA.y;
-        double caX = getGlobalPos().x - pointA.x;
-        double caY = getGlobalPos().y - pointA.y;
-
-        double a = baX * baX + baY * baY;
-        double bBy2 = baX * caX + baY * caY;
-        double c = caX * caX + caY * caY - radius * radius;
-
-        double pBy2 = bBy2 / a;
-        double q = c / a;
-
-        double disc = pBy2 * pBy2 - q;
-        if (disc < 0) {
-            return false;
-        }
-        return true;
-    }
-
 	public boolean collide(Line line) {
-		return intersects(line.getStart(), line.getEnd());
+		return getGlobalBounds().intersectsLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
 	}
 	
 }

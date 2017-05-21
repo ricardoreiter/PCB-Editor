@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.sun.javafx.geom.Line2D;
@@ -117,7 +118,25 @@ public class Track extends GraphicObject {
 		return layer;
 	}
 
-	public boolean collide(Line line) {
+	public List<Line> getLinesGlobalPos() {
+		List<Line> result = new LinkedList<>();
+		
+		Point firstPoint = points.get(0);
+		for (int i = 1; i < points.size(); i++) {
+			Point secondPoint = points.get(i);
+			result.add(new Line(localPosToGlobalPos(firstPoint), localPosToGlobalPos(secondPoint)));
+			firstPoint = secondPoint;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Check if the line collides with this track
+	 * @param line
+	 * @return
+	 */
+	public boolean collides(Line line) {
 		Point startLocalPos = globalPosToLocalPos(line.getStart());
 		Point endLocalPos = globalPosToLocalPos(line.getEnd());
 		

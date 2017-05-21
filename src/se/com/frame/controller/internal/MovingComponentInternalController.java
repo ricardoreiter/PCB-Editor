@@ -1,6 +1,7 @@
 package se.com.frame.controller.internal;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -34,10 +35,12 @@ public class MovingComponentInternalController implements BoardEditorInternalCon
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (!board.isInsideWorkableArea(component.getGlobalBounds())) {
+		Rectangle globalBounds = component.getGlobalBounds();
+		if (!board.isInsideWorkableArea(globalBounds) || board.intersectsWithComponent(component)) {
 			component.setPos(movingComponentInitialPos);
 			component.setRotation(movingComponentInitialRotation);
 		}
+		board.refreshStatus();
 		if (observer != null)
 			observer.notify(this);
 	}

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import se.com.config.GlobalConfig;
@@ -21,6 +22,7 @@ public class Board extends GraphicObject {
 	private List<Track> tracks = new LinkedList<>();
 	private int workableAreaConstraint;
 	private int layers;
+	private transient List<BoardStatusListener> statusListeners;
 
 	public Board(Point pos, Rectangle boardSize, int workableAreaConstraint, int layers) {
 		super(pos, boardSize, 0);
@@ -130,7 +132,7 @@ public class Board extends GraphicObject {
 		for (Track t : tracks) {
 			if (!ignoreSet.contains(t)) {
 				if (t.getLayer() == layer) {
-					if (t.collide(line)) {
+					if (t.collides(line)) {
 						result.add(t);
 					}
 				}
@@ -138,7 +140,7 @@ public class Board extends GraphicObject {
 		}
 		for (BoardComponent c : components) {
 			if (!ignoreSet.contains(c)) {
-				if (c.collide(line, ignoreSet)) {
+				if (c.collides(line, ignoreSet)) {
 					result.add(c);
 				}
 			}
@@ -158,7 +160,7 @@ public class Board extends GraphicObject {
 	
 	/**
 	 * Check if rect is inside the workable area
-	 * @param rect
+	 * @param rect in Global Pos
 	 * @return
 	 */
 	public boolean isInsideWorkableArea(Rectangle rect) {
@@ -166,5 +168,66 @@ public class Board extends GraphicObject {
 		rect.setLocation(globalPosToLocalPos(rect.getLocation()));
 		return workableArea.contains(rect);
 	}
+	
+	/**
+	 * Check if the component intersects with another component
+	 * @param component
+	 * @return
+	 */
+	public boolean intersectsWithComponent(BoardComponent component) {
+		Rectangle globalBounds = component.getGlobalBounds();
+		for (BoardComponent c : components) {
+			if (!component.equals(c) && c.getGlobalBounds().intersects(globalBounds)) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	/**
+	 * Refresh the board status, notifying the listeners about the new status
+	 */
+	public void refreshStatus() {
+		Set<BoardErrors> errors = new HashSet<>();
 		
+		for (BoardComponent c : components) {
+			if (!isInsideWorkableArea(c.getGlobalBounds())) {
+				errors.add(BoardErrors.COMPONENT_OFF_WORKABLE_AREA);
+			}
+			if (intersectsWithComponent(c)) {
+				errors.add(BoardErrors.COMPONENT_INTERSECTING_COMPONENT);
+			}
+		}
+		
+		for (Track t : tracks) {
+			List<Line> lines = t.getLinesGlobalPos();
+			for (Line l : lines) {
+				if (!isLineFree(l, t.getLayer(), t, t.getPadA(), t.getPadB())) {
+					errors.add(BoardErrors.TRACK_INTERSECTING_TRACK);
+				}
+				if (!isInsideWorkableArea(l)) {
+					errors.add(BoardErrors.TRACK_OFF_WORKABLE_AREA);
+				}
+			}
+		}
+		
+		for (BoardStatusListener listener : statusListeners) {
+			listener.statusChanged(errors.toArray(new BoardErrors[errors.size()]));
+		}
+	}
+	
+	/**
+	 * Add a new listener that will listen to changes in the board's status
+	 * @param listener
+	 */
+	public void addStatusListener(BoardStatusListener listener) {
+		if (statusListeners == null) statusListeners = new LinkedList<>();
+		statusListeners.add(listener);
+	}
+	
+	public void removeStatusListener(BoardStatusListener listener) {
+		statusListeners.remove(listener);
+	}
+	
 }

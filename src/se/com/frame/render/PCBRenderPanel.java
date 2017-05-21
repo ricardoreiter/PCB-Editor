@@ -64,6 +64,7 @@ public class PCBRenderPanel extends JPanel {
 		for (Drawable drawable : temporaryDrawables) {
 			drawable.paint(g2);
 		}
+		board.refreshStatus();
 	}
 
 	public void addTemporaryDrawable(Drawable drawable) {

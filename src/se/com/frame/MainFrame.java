@@ -17,27 +17,32 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import se.com.component.Board;
+import se.com.component.BoardErrors;
 import se.com.component.BoardLoader;
+import se.com.component.BoardStatusListener;
 import se.com.frame.controller.ComponentEditModeController;
 import se.com.frame.controller.MainFrameController;
 import se.com.frame.controller.TrackEditModeController;
 import se.com.frame.render.PCBRenderPanel;
 
-public class MainFrame implements MouseInputListener, KeyListener {
+public class MainFrame implements MouseInputListener, KeyListener, BoardStatusListener {
 
 	private JFrame frmPcbEditor;
 	private JPanel rightPanel;
+	private JLabel lblStatusText = new JLabel("OK");
 	private PCBRenderPanel renderPanel;
 	private Board board = new Board(new Point(200, 200), new Rectangle(0, 0, 300, 300), 15, 1);
 	private File openFile = null;
@@ -81,10 +86,22 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		frmPcbEditor.getContentPane().add(rightPanel, BorderLayout.EAST);
 		rightPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		board.addStatusListener(this);
 		renderPanel = new PCBRenderPanel(board);
 		renderPanel.setBackground(Color.BLACK);
 		frmPcbEditor.getContentPane().add(renderPanel, BorderLayout.CENTER);
 		renderPanel.setLayout(new FlowLayout());
+		
+		JPanel statusPanel = new JPanel();
+		frmPcbEditor.getContentPane().add(statusPanel, BorderLayout.SOUTH);
+		statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		JLabel lblStatus = new JLabel("Status:");
+		lblStatus.setHorizontalAlignment(SwingConstants.LEFT);
+		statusPanel.add(lblStatus);
+		lblStatusText.setToolTipText("");
+		
+		statusPanel.add(lblStatusText);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmPcbEditor.setJMenuBar(menuBar);
@@ -168,9 +185,6 @@ public class MainFrame implements MouseInputListener, KeyListener {
 		JSeparator separator_2 = new JSeparator();
 		mnEdit.add(separator_2);
 		
-		JSeparator separator_3 = new JSeparator();
-		mnEdit.add(separator_3);
-		
 		JMenuItem mntmOptions = new JMenuItem("Options");
 		mnEdit.add(mntmOptions);
 		
@@ -219,6 +233,8 @@ public class MainFrame implements MouseInputListener, KeyListener {
 
 	private void setBoard(Board board) {
 		this.board = board;
+		this.board.addStatusListener(this);
+		this.board.refreshStatus();
 		setController(ComponentEditModeController.class);
 	}
 	
@@ -307,6 +323,24 @@ public class MainFrame implements MouseInputListener, KeyListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	@Override
+	public void statusChanged(BoardErrors[] errors) {
+		if (errors.length > 0) {
+			lblStatusText.setText("ERRORS");
+			StringBuilder sb = new StringBuilder("<html>");
+			
+			for (BoardErrors error : errors) {
+				sb.append(error).append("<br>");
+			}
+			sb.append("</html>");
+			
+			lblStatusText.setToolTipText(sb.toString());
+		} else {
+			lblStatusText.setText("OK");
+			lblStatusText.setToolTipText("No errors");
 		}
 	}
 	

@@ -116,6 +116,7 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 				unselectSelectedComponent();
 			}
 		}
+		mainFrame.getBoard().refreshStatus();
 	}
 	
 	@Override

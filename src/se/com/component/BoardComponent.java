@@ -62,7 +62,7 @@ public class BoardComponent extends GraphicObject {
 	 * @param ignoreSet
 	 * @return
 	 */
-	public boolean collide(Line line, HashSet<GraphicObject> ignoreSet) {
+	public boolean collides(Line line, HashSet<GraphicObject> ignoreSet) {
 		for (Pad p : pads) {
 			if (!ignoreSet.contains(p)) {
 				if (p.collide(line)) {
