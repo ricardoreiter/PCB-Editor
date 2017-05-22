@@ -11,6 +11,10 @@ import se.com.frame.controller.internal.EditTrackInternalController;
 import se.com.frame.controller.internal.SelectTrackInternalController;
 import se.com.frame.model.LayerListModel;
 
+/**
+ * Controller of the track edition mode, when the user is adding/changing new tracks to the board
+ * Has 2 sub-controllers, see {@link SelectTrackInternalController} and {@link EditTrackInternalController}
+ */
 public class TrackEditModeController extends MainFrameController implements BoardEditorInternalControllerObserver {
 
 	private JComboBox<Integer> layerList;

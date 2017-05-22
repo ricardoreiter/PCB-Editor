@@ -9,6 +9,9 @@ import se.com.component.BoardComponent;
 import se.com.component.ComponentConfig;
 import se.com.frame.MainFrame;
 
+/**
+ * Sub-controller that handles the adding of a new component to the board 
+ */
 public class AddComponentInternalController implements BoardEditorInternalController {
 
 	private BoardComponent component;
@@ -37,26 +40,18 @@ public class AddComponentInternalController implements BoardEditorInternalContro
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

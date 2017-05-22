@@ -9,6 +9,10 @@ import se.com.frame.MainFrame;
 import se.com.frame.render.HighlightBox;
 import se.com.util.ColorUtils;
 
+/**
+ * Sub-controller that controls the selection of components of the board, highlighting components that are below the mouse pointer, 
+ * and giving the user the ability to select components
+ */
 public class SelectingComponentInternalController implements BoardEditorInternalController {
 
 	private BoardComponent initialSelectedComponent;
@@ -46,7 +50,8 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 		} else {
 			unselectSelectedComponent();
 		}
-		observer.notify(this);
+		if (observer != null)
+			observer.notify(this);
 	}
 
 	private void unselectSelectedComponent() {
@@ -129,6 +134,9 @@ public class SelectingComponentInternalController implements BoardEditorInternal
 		mainFrame.getRenderPanel().clearTemporaryDrawables();
 	}
 	
+	/**
+	 * @return the component currently selected by this controller, null if no component is selected
+	 */
 	public BoardComponent getSelectedComponent() {
 		return selectedComponent;
 	}

@@ -12,6 +12,9 @@ import com.google.gson.Gson;
 
 import se.com.config.GlobalConfig;
 
+/**
+ * Singleton that handles the loading of ComponentConfigs from a folder  
+ */
 public class ComponentConfigFactory {
 
 	private HashMap<String, ComponentConfig> components = new HashMap<>();

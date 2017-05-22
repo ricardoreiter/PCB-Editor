@@ -6,9 +6,13 @@ import java.awt.event.MouseEvent;
 import se.com.component.Pad;
 import se.com.component.Track;
 import se.com.frame.MainFrame;
+import se.com.frame.controller.TrackEditModeController;
 import se.com.frame.render.HighlightBox;
 import se.com.util.ColorUtils;
 
+/**
+ * Sub-controller of {@link TrackEditModeController}. Controls the selection of a track/pad, to move/add a track.
+ */
 public class SelectTrackInternalController implements BoardEditorInternalController {
 
 	private Pad pad;

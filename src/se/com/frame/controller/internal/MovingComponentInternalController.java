@@ -8,6 +8,10 @@ import java.awt.event.MouseEvent;
 import se.com.component.Board;
 import se.com.component.BoardComponent;
 
+/**
+ * Sub-controller that controls the position of a component on the board.
+ * Use the mouseDragged event to change its position.
+ */
 public class MovingComponentInternalController implements BoardEditorInternalController {
 
 	private BoardComponent component;

@@ -9,6 +9,9 @@ import java.util.List;
 import se.com.frame.render.GraphicObject;
 import se.com.util.Line;
 
+/**
+ * A component that can be attached to a Board 
+ */
 public class BoardComponent extends GraphicObject {
 
 	private static final long serialVersionUID = 6862662924117934209L;

@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * Board Loader/Saver 
+ */
 public abstract class BoardLoader {
 
 	public static void saveBoard(Board board, File file) throws IOException {

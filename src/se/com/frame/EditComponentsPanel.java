@@ -33,7 +33,6 @@ public class EditComponentsPanel extends JPanel {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBorder(new LineBorder(new Color(0, 0, 0)));
 		list.setAlignmentY(1.0f);
-		list.setFocusable(false);
 		
 		JLabel lblSelected = new JLabel("Selected Component");
 		lblSelected.setHorizontalAlignment(SwingConstants.CENTER);

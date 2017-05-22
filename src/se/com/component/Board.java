@@ -15,6 +15,9 @@ import se.com.config.GlobalConfig;
 import se.com.frame.render.GraphicObject;
 import se.com.util.Line;
 
+/**
+ * A pcb Board, with components and tracks attached to it
+ */
 public class Board extends GraphicObject {
 
 	private static final long serialVersionUID = -7519434690422307644L;
@@ -34,6 +37,10 @@ public class Board extends GraphicObject {
 		components.add(component);
 	}
 	
+	/**
+	 * Remove a component and all tracks attached to it
+	 * @param component
+	 */
 	public void removeComponent(BoardComponent component) {
 		List<Pad> pads = component.getPads();
 		for (Pad p : pads) {
@@ -46,6 +53,11 @@ public class Board extends GraphicObject {
 		components.remove(component);
 	}
 	
+	/**
+	 * Gets the component that is below the point, in case of more than one, gets the one which the center distance to the point is smaller
+	 * @param point global pos
+	 * @return component
+	 */
 	public BoardComponent getComponentAtPos(Point point) {
 		List<BoardComponent> filtered = components.stream().filter(component -> {
 											return component.getGlobalBounds().contains(point);
@@ -66,6 +78,11 @@ public class Board extends GraphicObject {
 		tracks.add(track);
 	}
 
+	/**
+	 * Gets the pad that is below the point
+	 * @param point
+	 * @return pad
+	 */
 	public Pad getPadAtPos(Point point) {
 		List<Pad> pads = new LinkedList<>();
 		components.forEach(comp -> pads.addAll(comp.getPads()));
@@ -76,6 +93,10 @@ public class Board extends GraphicObject {
 		return null;
 	}
 
+	/**
+	 * Remove a track from the board, and detach it from the connected pads
+	 * @param track
+	 */
 	public void removeTrack(Track track) {
 		tracks.remove(track);
 		if (track.getPadA() != null) {
@@ -87,6 +108,9 @@ public class Board extends GraphicObject {
 		track.setParent(null);
 	}
 
+	/**
+	 * @return area which the components and tracks can be placed
+	 */
 	public Rectangle getWorkableArea() {
 		Rectangle result = (Rectangle) getBounds().clone();
 		result.grow(-workableAreaConstraint, -workableAreaConstraint);
@@ -126,6 +150,13 @@ public class Board extends GraphicObject {
 		return getElementsAlongLine(line, layer, ignoreList).size() == 0;
 	}
 
+	/**
+	 * Get the components that are intersecting with the line 
+	 * @param line in Global Pos
+	 * @param layer track layer
+	 * @param ignoreList components to ignore
+	 * @return components intersecting with line
+	 */
 	public List<GraphicObject> getElementsAlongLine(Line line, int layer, GraphicObject... ignoreList) {
 		HashSet<GraphicObject> ignoreSet = new HashSet<>(Arrays.asList(ignoreList));
 		List<GraphicObject> result = new LinkedList<>();

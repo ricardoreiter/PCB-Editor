@@ -8,8 +8,12 @@ import se.com.component.Board;
 import se.com.component.Pad;
 import se.com.component.Track;
 import se.com.frame.MainFrame;
+import se.com.frame.controller.TrackEditModeController;
 import se.com.util.Line;
 
+/**
+ * Sub-controller of {@link TrackEditModeController}. Controls a Track on the board, adding/removing new points. 
+ */
 public class EditTrackInternalController implements BoardEditorInternalController {
 
 	private Pad highlightedPad;

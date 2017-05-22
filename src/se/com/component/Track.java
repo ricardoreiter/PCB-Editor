@@ -118,6 +118,10 @@ public class Track extends GraphicObject {
 		return layer;
 	}
 
+	/**
+	 * Get the lines of the track, in Global Pos
+	 * @return lines
+	 */
 	public List<Line> getLinesGlobalPos() {
 		List<Line> result = new LinkedList<>();
 		

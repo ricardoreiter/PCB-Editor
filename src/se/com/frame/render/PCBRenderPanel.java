@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 import se.com.component.Board;
 
 @SuppressWarnings("serial")
+/**
+ * A panel that renders a Board 
+ * @author Ricardo Reiter
+ */
 public class PCBRenderPanel extends JPanel {
 
 	private Grid grid = new Grid(50);
@@ -67,14 +71,25 @@ public class PCBRenderPanel extends JPanel {
 		board.refreshStatus();
 	}
 
+	/**
+	 * Adds a temporary Drawable, that will be draw while in the list
+	 * @param drawable
+	 */
 	public void addTemporaryDrawable(Drawable drawable) {
 		temporaryDrawables.add(drawable);
 	}
 	
+	/**
+	 * Removes a temporary Drawable, to don't be rendered anymore 
+	 * @param drawable
+	 */
 	public void removeTemporaryDrawable(Drawable drawable) {
 		temporaryDrawables.remove(drawable);
 	}
 	
+	/**
+	 * Removes all the temporary Drawables 
+	 */
 	public void clearTemporaryDrawables() {
 		temporaryDrawables.clear();
 	}

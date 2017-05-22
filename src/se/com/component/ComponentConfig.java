@@ -14,6 +14,9 @@ import se.com.config.GlobalConfig;
 import se.com.frame.render.Drawable;
 import se.com.util.Line;
 
+/**
+ * Configuration of a component. The shape and pads location. 
+ */
 public class ComponentConfig implements Drawable, Serializable {
 
 	private static final long serialVersionUID = -3360378534521468993L;

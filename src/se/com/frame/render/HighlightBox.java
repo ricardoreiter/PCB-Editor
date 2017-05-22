@@ -8,6 +8,9 @@ import java.awt.geom.AffineTransform;
 
 import se.com.config.GlobalConfig;
 
+/**
+ * A HighlightBox
+ */
 public class HighlightBox implements Drawable {
 
 	private Color color;

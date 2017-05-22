@@ -11,6 +11,11 @@ import se.com.frame.MainFrame;
 import se.com.frame.controller.internal.BoardEditorInternalController;
 import se.com.frame.controller.internal.BoardEditorInternalControllerObserver;
 
+/**
+ * Controller of the MainFrame, it will handle the Mouse and Keyboard input events
+ * Has a sub-controller that can be represented as states of the controller, the function of this controller is to provide the right panel tools to the user, 
+ * and to control and coordinate the sub-controllers
+ */
 public abstract class MainFrameController implements MouseInputListener, KeyListener, BoardEditorInternalControllerObserver {
 
 	protected MainFrame mainFrame;
@@ -70,6 +75,10 @@ public abstract class MainFrameController implements MouseInputListener, KeyList
 		internalController.keyReleased(e);
 	}
 	
+	/**
+	 * Changes the sub-controller to a new one
+	 * @param controller new sub-controller
+	 */
 	protected void setNewInternalController(BoardEditorInternalController controller) {
 		if (internalController != null) {
 			internalController.finishController(false);
@@ -78,8 +87,14 @@ public abstract class MainFrameController implements MouseInputListener, KeyList
 		internalController.startController();
 	}
 	
+	/**
+	 * @return the panel with the tools to this controller (Will be added to the rightPanel)
+	 */
 	public abstract JPanel getControllerPanel();
 	
+	/**
+	 * Called when the mainFrame changes the mainController
+	 */
 	public void finishController() {
 		internalController.finishController(true);
 	}

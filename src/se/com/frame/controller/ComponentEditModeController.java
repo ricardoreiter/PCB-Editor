@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import se.com.component.BoardComponent;
 import se.com.component.ComponentConfig;
@@ -24,7 +22,11 @@ import se.com.frame.controller.internal.SelectingComponentInternalController;
 import se.com.frame.model.ComponentListModel;
 import se.com.frame.model.SelectedComponentTableModel;
 
-public class ComponentEditModeController extends MainFrameController implements ListSelectionListener, BoardEditorInternalControllerObserver {
+/**
+ * Controller of the component edit mode, when the user is adding/modifying components to the board.
+ * Has 3 sub-controllers, see {@link AddComponentInternalController}, {@link MovingComponentInternalController} and {@link SelectingComponentInternalController}
+ */
+public class ComponentEditModeController extends MainFrameController implements FocusListener, BoardEditorInternalControllerObserver {
 
 	private BoardComponent selectedComponent;
 	private JList<ComponentConfig> componentList;
@@ -48,17 +50,7 @@ public class ComponentEditModeController extends MainFrameController implements 
 		EditComponentsPanel panel = new EditComponentsPanel();
 		
 		componentList = panel.getList();
-		componentList.addListSelectionListener(this);
-		componentList.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				valueChanged(null);
-			}
-		});
+		componentList.addFocusListener(this);
 		
 		List<ComponentConfig> components = new LinkedList<>();
 		components.addAll(ComponentConfigFactory.getInstance().getComponents().values());
@@ -69,14 +61,6 @@ public class ComponentEditModeController extends MainFrameController implements 
 		panel.getSelectedComponentTable().setModel(selectedComponentTableModel);
 		
 		return panel;
-	}
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		if (componentList.getSelectedValue() != null) {
-			setNewInternalController(new AddComponentInternalController(componentList.getSelectedValue(), this, mainFrame));
-			mainFrame.getRenderPanel().requestFocus();
-		}
 	}
 
 	@Override
@@ -95,6 +79,19 @@ public class ComponentEditModeController extends MainFrameController implements 
 		} else if (source instanceof AddComponentInternalController) {
 			setNewInternalController(new SelectingComponentInternalController(mainFrame, this, ((AddComponentInternalController) internalController).getLastAddedComponent()));
 		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// When the component list obtains focus, we change the sub-controller to AddComponentInternalController
+		if (componentList.getSelectedValue() != null) {
+			setNewInternalController(new AddComponentInternalController(componentList.getSelectedValue(), this, mainFrame));
+			mainFrame.getRenderPanel().requestFocus();
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
 	}
 	
 }
