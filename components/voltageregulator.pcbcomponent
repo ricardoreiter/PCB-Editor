@@ -1,0 +1,34 @@
+{
+  "name":"5v voltage regulator",
+  "bounds":{
+    "x":0,
+    "y":0,
+    "width":14,
+    "height":40
+  },
+  "shape":{
+    "npoints":4,
+    "xpoints":[0,14,14,0],
+    "ypoints":[0,0,40,40]
+  },
+  "pads":[
+    {
+      "startX":7,
+      "startY":7,
+      "endX":7,
+      "endY":7
+    },
+    {
+      "startX":7,
+      "startY":20,
+      "endX":7,
+      "endY":20
+    },
+    {
+      "startX":7,
+      "startY":33,
+      "endX":7,
+      "endY":33
+    }
+  ]
+}
